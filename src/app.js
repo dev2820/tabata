@@ -13,12 +13,12 @@ export default class App extends Component {
         goalReps: 6,
       },
       created: () => {
-        this.shadowRoot.querySelector("my-timer").dispatchEvent(
+        this.$("my-timer").dispatchEvent(
           new CustomEvent(EVENT.SETTIME, {
             detail: { startTime: this.state["startTime"] },
           })
         );
-        this.shadowRoot.querySelector("my-reps").dispatchEvent(
+        this.$("my-reps").dispatchEvent(
           new CustomEvent(EVENT.SETREPS, {
             detail: {
               current: this.state["currentReps"],
@@ -26,9 +26,10 @@ export default class App extends Component {
             },
           })
         );
-        const $button = this.shadowRoot.querySelector("run-and-stop-button");
-        $button.addEventListener(EVENT.CLICK, this.methods.timerToggle);
-
+        this.$("run-and-stop-button").addEventListener(
+          EVENT.CLICK,
+          this.methods.timerToggle
+        );
         this.addEventListener(EVENT.TIMEOVER, this.methods.timeoverHandler);
       },
       view: ({ state }) => {
@@ -52,12 +53,12 @@ export default class App extends Component {
             currentReps: this.state["currentReps"] + 1,
             startTime: new Time({ min: 0, sec: 5 }),
           });
-          this.shadowRoot.querySelector("my-timer").dispatchEvent(
+          this.$("my-timer").dispatchEvent(
             new CustomEvent(EVENT.SETTIME, {
               detail: { startTime: this.state["startTime"] },
             })
           );
-          this.shadowRoot.querySelector("my-reps").dispatchEvent(
+          this.$("my-reps").dispatchEvent(
             new CustomEvent(EVENT.SETREPS, {
               detail: {
                 current: this.state["currentReps"],
@@ -68,10 +69,8 @@ export default class App extends Component {
         }
       }.bind(this),
       timerToggle: function (e) {
-        const $button = this.shadowRoot.querySelector(
-          "run-and-stop-button.run-and-stop"
-        );
-        const $timer = this.shadowRoot.querySelector("my-timer");
+        const $button = this.$("run-and-stop-button.run-and-stop");
+        const $timer = this.$("my-timer");
 
         if ($timer.getAttribute("is-run") === "true") {
           $timer.dispatchEvent(new Event(EVENT.STOP));

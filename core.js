@@ -91,6 +91,9 @@ const isDiff = (nodeA, nodeB) => {
 };
 
 export class Component extends HTMLElement {
+  $ = (query) => {
+    return this.shadowRoot.querySelector(query);
+  };
   get state() {
     return this.#state;
   }
