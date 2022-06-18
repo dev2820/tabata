@@ -75,21 +75,13 @@ export default class App extends Component {
           const $button = this.$("run-and-stop-button.run-and-stop");
           const $timer = this.$("my-timer");
 
-          if ($timer.getAttribute("is-run") === "true") {
-            $timer.dispatchEvent(new Event(EVENT.STOP));
-            $button.dispatchEvent(
-              new CustomEvent(EVENT.CHANGE_STATE, {
-                detail: { state: "stop" },
-              })
-            );
-          } else {
-            $timer.dispatchEvent(new Event(EVENT.RUN));
-            $button.dispatchEvent(
-              new CustomEvent(EVENT.CHANGE_STATE, {
-                detail: { state: "run" },
-              })
-            );
-          }
+          const isTimerRun = $timer.getAttribute("is-run") === "true";
+          $timer.dispatchEvent(new Event(isTimerRun ? EVENT.STOP : EVENT.RUN));
+          $button.dispatchEvent(
+            new CustomEvent(EVENT.CHANGE_STATE, {
+              detail: { state: isTimerRun ? "stop" : "run" },
+            })
+          );
         },
       },
     });
