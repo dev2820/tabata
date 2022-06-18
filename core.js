@@ -108,9 +108,9 @@ export class Component extends HTMLElement {
   constructor(setup) {
     super();
     if (setup) {
-      setup.created && (this.#created = setup.created);
-      setup.mounted && (this.#mounted = setup.mounted);
-      setup.updated && (this.#updated = setup.updated);
+      setup.created && (this.#created = setup.created.bind(this));
+      setup.mounted && (this.#mounted = setup.mounted.bind(this));
+      setup.updated && (this.#updated = setup.updated.bind(this));
       setup.state && (this.#state = setup.state);
       setup.methods && (this.#methods = setup.methods);
       setup.view && (this.#view = setup.view);

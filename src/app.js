@@ -18,13 +18,14 @@ const createView = ({ state }) => {
 export default class App extends Component {
   constructor() {
     super({
+      view: createView,
       state: {
         message: "hello",
-        startTime: new Time({ min: 0, sec: 5 }),
+        startTime: new Time({ min: 0, sec: 200 }),
         currentReps: 1,
         goalReps: 6,
       },
-      created: () => {
+      created() {
         this.$("my-timer").dispatchEvent(
           new CustomEvent(EVENT.SETTIME, {
             detail: { startTime: this.state["startTime"] },
@@ -44,52 +45,51 @@ export default class App extends Component {
         );
         this.addEventListener(EVENT.TIMEOVER, this.methods.timeoverHandler);
       },
-      view: createView,
-    });
-    this.setMethods({
-      timeoverHandler: function (e) {
-        if (this.state["currentReps"] + 1 > this.state["goalReps"]) {
-          alert("finish");
-        } else {
-          this.setState({
-            currentReps: this.state["currentReps"] + 1,
-            startTime: new Time({ min: 0, sec: 5 }),
-          });
-          this.$("my-timer").dispatchEvent(
-            new CustomEvent(EVENT.SETTIME, {
-              detail: { startTime: this.state["startTime"] },
-            })
-          );
-          this.$("my-reps").dispatchEvent(
-            new CustomEvent(EVENT.SETREPS, {
-              detail: {
-                current: this.state["currentReps"],
-                goal: this.state["goalReps"],
-              },
-            })
-          );
-        }
-      }.bind(this),
-      timerToggle: function (e) {
-        const $button = this.$("run-and-stop-button.run-and-stop");
-        const $timer = this.$("my-timer");
+      methods: {
+        timeoverHandler(e) {
+          if (this.state["currentReps"] + 1 > this.state["goalReps"]) {
+            alert("finish");
+          } else {
+            this.setState({
+              currentReps: this.state["currentReps"] + 1,
+              startTime: new Time({ min: 0, sec: 2 }),
+            });
+            this.$("my-timer").dispatchEvent(
+              new CustomEvent(EVENT.SETTIME, {
+                detail: { startTime: this.state["startTime"] },
+              })
+            );
+            this.$("my-reps").dispatchEvent(
+              new CustomEvent(EVENT.SETREPS, {
+                detail: {
+                  current: this.state["currentReps"],
+                  goal: this.state["goalReps"],
+                },
+              })
+            );
+          }
+        },
+        timerToggle(e) {
+          const $button = this.$("run-and-stop-button.run-and-stop");
+          const $timer = this.$("my-timer");
 
-        if ($timer.getAttribute("is-run") === "true") {
-          $timer.dispatchEvent(new Event(EVENT.STOP));
-          $button.dispatchEvent(
-            new CustomEvent(EVENT.CHANGE_STATE, {
-              detail: { state: "stop" },
-            })
-          );
-        } else {
-          $timer.dispatchEvent(new Event(EVENT.RUN));
-          $button.dispatchEvent(
-            new CustomEvent(EVENT.CHANGE_STATE, {
-              detail: { state: "run" },
-            })
-          );
-        }
-      }.bind(this),
+          if ($timer.getAttribute("is-run") === "true") {
+            $timer.dispatchEvent(new Event(EVENT.STOP));
+            $button.dispatchEvent(
+              new CustomEvent(EVENT.CHANGE_STATE, {
+                detail: { state: "stop" },
+              })
+            );
+          } else {
+            $timer.dispatchEvent(new Event(EVENT.RUN));
+            $button.dispatchEvent(
+              new CustomEvent(EVENT.CHANGE_STATE, {
+                detail: { state: "run" },
+              })
+            );
+          }
+        },
+      },
     });
   }
 }
