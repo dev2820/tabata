@@ -1,0 +1,33 @@
+@font-face {
+    font-family: 'Nanum Gothic';
+    src: url(/src/assets/fonts/NanumGothic.ttf);
+    font-weight:normal;
+    font-style:normal;
+}
+@font-face {
+    font-family: 'Nanum Gothic';
+    src: url(/src/assets/fonts/NanumGothicExtraBold.ttf);
+    font-weight:bold;
+    font-style:normal;
+}
+@font-face {
+    font-family: 'Lato';
+    src: url(/src/assets/fonts/Lato-Regular.ttf);
+    font-weight:normal;
+    font-style:normal;
+}
+@font-face {
+    font-family: 'Lato';
+    src: url(/src/assets/fonts/Lato-Light.ttf);
+    font-weight:300;
+    font-style:normal;
+}
+@font-face {
+    font-family: 'RobotoMono';
+    src: url(/src/assets/fonts/RobotoMono-Light.ttf);
+    font-weight:300;
+    font-style:normal;
+}
+:root * {
+    font-family:'Nanum Gothic','Lato','RobotoMono', sans-serif;
+}

@@ -1,0 +1,22 @@
+.timer {
+    display:flex;
+    flex-direction:row;
+    text-align:center;
+    font-family:'RobotoMono';
+    font-weight:300;
+}
+.timer > span {
+    font-size:10rem;
+    color:green;
+    margin:auto 0;
+}
+.timer.will-be-end > span {
+    color:red;
+}
+.timer > span.minutes,span.seconds {
+    width: 13rem;
+}
+.timer > span.colon {
+    height:10rem;
+    line-height:8.5rem;
+}

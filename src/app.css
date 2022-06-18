@@ -1,0 +1,21 @@
+#app {
+    width:100%;
+    height:100%;
+}
+#app > section.timer-zone {
+    width:31.25rem;
+    height:17rem;
+    position:absolute;
+    top:50%;
+    margin-top:-8.5rem;
+    left:50%;
+    margin-left:-15.625rem;
+    display:flex;
+    justify-content: center;
+    flex-direction:column;
+    align-items: center;
+}
+#app > section.timer-zone > run-and-stop-button {
+    position:relative;
+    top:2rem;
+}

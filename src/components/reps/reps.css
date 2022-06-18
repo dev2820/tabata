@@ -1,0 +1,7 @@
+.reps {
+    font-size:2rem;
+    font-family:'RobotoMono';
+}
+.reps > span.current {
+    font-size:4rem;
+}
