@@ -94,6 +94,9 @@ export class Component extends HTMLElement {
   $ = (query) => {
     return this.shadowRoot.querySelector(query);
   };
+  get $el() {
+    return this.shadowRoot.firstElementChild;
+  }
   get state() {
     return this.#state;
   }
