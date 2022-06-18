@@ -3,6 +3,18 @@ import Time from "./modules/Time";
 import appStyle from "./app.css";
 import { Component } from "/core";
 import EVENT from "./types/event";
+
+const createView = ({ state }) => {
+  const newDOM = document.createElement("div");
+  newDOM.id = "app";
+  newDOM.appendChild(
+    document.querySelector("template.app").content.cloneNode(true)
+  );
+  const style = newDOM.querySelector("style");
+  style.innerHTML = appStyle;
+
+  return newDOM;
+};
 export default class App extends Component {
   constructor() {
     super({
@@ -32,17 +44,7 @@ export default class App extends Component {
         );
         this.addEventListener(EVENT.TIMEOVER, this.methods.timeoverHandler);
       },
-      view: ({ state }) => {
-        const newDOM = document.createElement("div");
-        newDOM.id = "app";
-        newDOM.appendChild(
-          document.querySelector("template.app").content.cloneNode(true)
-        );
-        const style = newDOM.querySelector("style");
-        style.innerHTML = appStyle;
-
-        return newDOM;
-      },
+      view: createView,
     });
     this.setMethods({
       timeoverHandler: function (e) {
