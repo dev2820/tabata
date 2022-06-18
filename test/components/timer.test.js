@@ -7,7 +7,7 @@ import Timer from "../../src/components/timer/timer";
 import { jest } from "@jest/globals";
 import { registApp, registTemplate, render } from "../../core";
 import timerTemplate from "../../src/components/timer/timerTemplate";
-import appTemplate from "../../src/appTemplate";
+import timerPageTemplate from "../../src/pages/timer/timerPage";
 import buttonTemplate from "../../src/components/button/buttonTemplate.js";
 
 async function waitRequestAnimationFrame() {
@@ -18,7 +18,7 @@ async function waitRequestAnimationFrame() {
   );
 }
 describe("timer dom", () => {
-  registTemplate(appTemplate);
+  registTemplate(timerPageTemplate);
   registTemplate(timerTemplate);
   registTemplate(buttonTemplate);
   window.customElements.define("my-timer", Timer);

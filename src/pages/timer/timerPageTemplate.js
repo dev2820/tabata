@@ -1,5 +1,5 @@
 const template = document.createElement("template");
-template.className = "template app";
+template.className = "template timer-page";
 template.innerHTML = `
 <style></style>
 <section class="timer-zone">

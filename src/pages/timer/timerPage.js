@@ -1,17 +1,16 @@
-import Timer from "./components/timer/timer";
-import Time from "./modules/Time";
-import appStyle from "./app.css";
+import Time from "/src/modules/Time";
+import timerPageStyle from "./timerPage.css";
 import { Component } from "/core";
-import EVENT from "./types/event";
+import EVENT from "/src/types/event";
 
 const createView = ({ state }) => {
   const newDOM = document.createElement("div");
   newDOM.id = "app";
   newDOM.appendChild(
-    document.querySelector("template.app").content.cloneNode(true)
+    document.querySelector("template.timer-page").content.cloneNode(true)
   );
   const style = newDOM.querySelector("style");
-  style.innerHTML = appStyle;
+  style.innerHTML = timerPageStyle;
 
   return newDOM;
 };
