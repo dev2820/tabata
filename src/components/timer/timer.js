@@ -9,6 +9,7 @@ const createView = ({ props, state }) => {
   $timer.appendChild(
     document.querySelector("template.timer").content.cloneNode(true)
   );
+  $timer.classList.add(state["isRun"] ? "run" : "stop");
   const $style = $timer.querySelector("style");
   $style.innerHTML = timerStyle;
 
@@ -79,12 +80,14 @@ export default class Timer extends Component {
             }, 1000),
             isRun: true,
           });
+
           this.setAttribute("is-run", true);
         },
         stop() {
           clearInterval(this.state["interval"]);
-          this.state["isRun"] = false;
-
+          this.setState({
+            isRun: false,
+          });
           this.setAttribute("is-run", false);
         },
       },

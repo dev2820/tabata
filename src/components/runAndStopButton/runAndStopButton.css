@@ -14,14 +14,14 @@ button:hover {
 }
 
 .run > button {
-    background:#E2F0CB;
+    background:lightsalmon;
 }
 .run > button:hover {
-    background:#caeb94;
+    background:orange;
 }
 .stop > button {
-    background:#FF9AA2;
+    background:lightgreen;
 }
 .stop > button:hover {
-    background:#ff858e;
+    background:greenyellow;
 }

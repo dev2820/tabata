@@ -7,7 +7,6 @@
 }
 .timer > span {
     font-size:10rem;
-    color:green;
     margin:auto 0;
 }
 .timer.will-be-end > span {
@@ -19,4 +18,10 @@
 .timer > span.colon {
     height:10rem;
     line-height:8.5rem;
+}
+.timer.run {
+    color:green;
+}
+.timer.stop {
+    color:orange;
 }
