@@ -105,8 +105,9 @@ export class Component extends HTMLElement {
   constructor(setup) {
     super();
     if (setup) {
-      setup.created && this.onCreated(setup.created);
-      setup.mounted && this.onMounted(setup.mounted);
+      setup.created && (this.#created = setup.created);
+      setup.mounted && (this.#mounted = setup.mounted);
+      setup.updated && (this.#updated = setup.updated);
       setup.state && (this.#state = setup.state);
       setup.methods && (this.#methods = setup.methods);
       setup.view && (this.#view = setup.view);
@@ -116,7 +117,7 @@ export class Component extends HTMLElement {
   connectedCallback() {
     this.#mounted();
   }
-  #render = (callback) => {
+  #render(callback) {
     window.requestAnimationFrame(() => {
       const virtualDOM = this.#view({ state: this.#state });
       changeDiff(
@@ -126,7 +127,7 @@ export class Component extends HTMLElement {
       );
       if (callback) callback();
     });
-  };
+  }
   #create() {
     this.attachShadow({ mode: "open" });
     this.#render(this.#created);
@@ -137,15 +138,6 @@ export class Component extends HTMLElement {
   #created = function () {};
   #updated = function () {};
   #mounted = function () {};
-  onCreated(callback) {
-    this.#created = callback;
-  }
-  onMounted(callback) {
-    this.#mounted = callback;
-  }
-  onUpdated(callback) {
-    this.#updated = callback;
-  }
   setView(view) {
     this.#view = view;
   }

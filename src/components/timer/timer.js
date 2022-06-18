@@ -39,6 +39,9 @@ export default class Timer extends Component {
         isRun: false,
       },
       view: createView,
+      mounted() {
+        this.methods.run();
+      },
     });
     this.setMethods({
       riseTimeover: function () {
@@ -75,9 +78,6 @@ export default class Timer extends Component {
 
         this.setAttribute("is-run", false);
       }.bind(this),
-    });
-    this.onMounted(() => {
-      this.methods.run();
     });
     this.addEventListener(EVENT.SETTIME, (e) => {
       this.setState({ time: e.detail.startTime });
