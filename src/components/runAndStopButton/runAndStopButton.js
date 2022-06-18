@@ -26,7 +26,7 @@ export default class RunAndStopButton extends Component {
         isRun: true,
       },
       view: createView,
-      created: () => {
+      created() {
         this.addEventListener(EVENT.CHANGE_STATE, (ce) => {
           this.setState({
             isRun: ce.detail.state === "run",
