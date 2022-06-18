@@ -109,16 +109,20 @@ export class Component extends HTMLElement {
     super();
     if (setup) {
       setup.created && (this.#created = setup.created.bind(this));
-      setup.mounted && (this.#mounted = setup.mounted.bind(this));
       setup.updated && (this.#updated = setup.updated.bind(this));
+      setup.connected && (this.#connected = setup.connected.bind(this));
       setup.state && (this.#state = setup.state);
       setup.methods && (this.#methods = setup.methods);
       setup.view && (this.#view = setup.view);
+
+      for (let methodName in this.#methods) {
+        this.#methods[methodName] = this.#methods[methodName].bind(this);
+      }
     }
     this.#create();
   }
   connectedCallback() {
-    this.#mounted();
+    this.#connected();
   }
   #render(callback) {
     window.requestAnimationFrame(() => {
@@ -138,9 +142,9 @@ export class Component extends HTMLElement {
   #update() {
     this.#render(this.#updated);
   }
-  #created = function () {};
+  #created = function () {}; //second) this에 요소가 render 된 상태 => 내부 요소에 이벤트 등을 addListener,dispatch 해야하면 여기서
+  #connected = function () {}; //first) this가 텅 빈 상태 (state 등은 있지만 내부 요소가 없음) => 이벤트 등은 여기서 걸어주자.
   #updated = function () {};
-  #mounted = function () {};
   setView(view) {
     this.#view = view;
   }

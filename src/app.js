@@ -25,6 +25,9 @@ export default class App extends Component {
         currentReps: 1,
         goalReps: 6,
       },
+      connected() {
+        this.addEventListener(EVENT.TIMEOVER, this.methods.timeoverHandler);
+      },
       created() {
         this.$("my-timer").dispatchEvent(
           new CustomEvent(EVENT.SETTIME, {
@@ -43,7 +46,6 @@ export default class App extends Component {
           EVENT.CLICK,
           this.methods.timerToggle
         );
-        this.addEventListener(EVENT.TIMEOVER, this.methods.timeoverHandler);
       },
       methods: {
         timeoverHandler(e) {
