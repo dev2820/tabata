@@ -2,7 +2,7 @@
     width:100%;
     height:100%;
 }
-#app > section.timer-zone {
+#app > main > section.timer-zone {
     width:31.25rem;
     height:17rem;
     position:absolute;
@@ -15,7 +15,7 @@
     flex-direction:column;
     align-items: center;
 }
-#app > section.timer-zone > run-and-stop-button {
+#app > main > section.timer-zone > run-and-stop-button {
     position:relative;
     top:2rem;
 }
