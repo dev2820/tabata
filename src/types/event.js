@@ -6,4 +6,5 @@ export default {
   STOP: "stop",
   CLICK: "click",
   CHANGE_STATE: "change-state",
+  SET_PHASE: "set-phase",
 };

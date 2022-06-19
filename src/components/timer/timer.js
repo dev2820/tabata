@@ -9,7 +9,7 @@ const createView = ({ props, state }) => {
   $timer.appendChild(
     document.querySelector("template.timer").content.cloneNode(true)
   );
-  $timer.classList.add(state["isRun"] ? "run" : "stop");
+  $timer.classList.add(state["phase"]);
   const $style = $timer.querySelector("style");
   $style.innerHTML = timerStyle;
 
@@ -19,7 +19,10 @@ const createView = ({ props, state }) => {
   const $seconds = $timer.querySelector("span.seconds");
   $seconds.innerText = ("00" + (state["time"]?.sec || 0)).slice(-2);
 
-  if (state["time"]?.isLeftUnder({ sec: 4 })) {
+  if (state["time"]?.isLeft({ sec: 0 })) {
+    $timer.classList.remove("stop");
+    $timer.classList.add("end");
+  } else if (state["time"]?.isLeftUnder({ sec: 4 })) {
     $timer.classList.add("will-be-end");
   }
   return $timer;
@@ -37,16 +40,15 @@ export default class Timer extends Component {
       state: {
         interval: null,
         time: null,
-        isRun: false,
+        phase: "stop",
       },
       view: createView,
       connected() {
         this.addEventListener(EVENT.SETTIME, (e) => {
-          this.setState({ time: e.detail.startTime });
+          this.setState({ time: e.detail.time });
           this.methods.run();
         });
         this.addEventListener(EVENT.RUN, (e) => {
-          console.log("receive run");
           this.methods.run();
         });
         this.addEventListener(EVENT.STOP, (e) => {
@@ -61,13 +63,12 @@ export default class Timer extends Component {
           );
         },
         run() {
-          const { time, isRun } = this.state;
-          if (!time || time.isLeft({ sec: 0 })) {
-            return; //시간이 없어서 타이머를 못킴
-          }
-          if (isRun === true) {
-            return; //이미 돌고있어서 타이머를 못킴
-          }
+          const { time, phase } = this.state;
+          //시간이 없어서 타이머를 못킴
+          if (!time || time.isLeft({ sec: 0 })) return;
+          //이미 돌고있어서 타이머를 못킴
+          if (phase === "run") return;
+
           this.setState({
             interval: setInterval(() => {
               const newTime = this.state["time"].decrease1sec();
@@ -78,17 +79,14 @@ export default class Timer extends Component {
                 this.methods.riseTimeover();
               }
             }, 1000),
-            isRun: true,
+            phase: "run",
           });
-
-          this.setAttribute("is-run", true);
         },
         stop() {
           clearInterval(this.state["interval"]);
           this.setState({
-            isRun: false,
+            phase: "stop",
           });
-          this.setAttribute("is-run", false);
         },
       },
     });
