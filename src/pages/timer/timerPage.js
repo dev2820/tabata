@@ -2,6 +2,20 @@ import Time from "/src/modules/Time";
 import timerPageStyle from "./timerPage.css";
 import { Component } from "/core";
 import EVENT from "/src/types/event";
+import Exercise from "../../modules/exercise";
+
+const phase2text = (phase) => {
+  switch (phase) {
+    case "run":
+      return "운동";
+    case "break":
+      return "휴식";
+    case "end":
+      return "종료";
+    case "stop":
+      return "정지";
+  }
+};
 
 const createView = ({ state }) => {
   const newDOM = document.createElement("div");
@@ -9,35 +23,38 @@ const createView = ({ state }) => {
   newDOM.appendChild(
     document.querySelector("template.timer-page").content.cloneNode(true)
   );
-  const style = newDOM.querySelector("style");
-  style.innerHTML = timerPageStyle;
-
+  const $style = newDOM.querySelector("style");
+  $style.innerHTML = timerPageStyle;
+  const $phase = newDOM.querySelector("h2.phase");
+  $phase.innerText = phase2text(state["exercise"].phase.name);
   return newDOM;
 };
+//phase: run - break - run - break ... - run - end
 export default class App extends Component {
   constructor() {
     super({
       view: createView,
       state: {
-        message: "hello",
-        startTime: new Time({ min: 0, sec: 200 }),
-        currentReps: 1,
-        goalReps: 6,
+        runTime: new Time({ min: 0, sec: 5 }),
+        breakTime: new Time({ min: 0, sec: 3 }),
+        exercise: new Exercise(3),
       },
       connected() {
         this.addEventListener(EVENT.TIMEOVER, this.methods.timeoverHandler);
+        this.state["exercise"].next();
       },
       created() {
         this.$("my-timer").dispatchEvent(
           new CustomEvent(EVENT.SETTIME, {
-            detail: { startTime: this.state["startTime"] },
+            detail: { time: this.state["runTime"] },
           })
         );
+        this.$("my-timer").dispatchEvent(new Event(EVENT.RUN));
         this.$("my-reps").dispatchEvent(
           new CustomEvent(EVENT.SETREPS, {
             detail: {
-              current: this.state["currentReps"],
-              goal: this.state["goalReps"],
+              current: this.state["exercise"].phase.reps,
+              goal: this.state["exercise"].goal,
             },
           })
         );
@@ -48,37 +65,66 @@ export default class App extends Component {
       },
       methods: {
         timeoverHandler(e) {
-          if (this.state["currentReps"] + 1 > this.state["goalReps"]) {
-            alert("finish");
-          } else {
-            this.setState({
-              currentReps: this.state["currentReps"] + 1,
-              startTime: new Time({ min: 0, sec: 2 }),
+          this.state["exercise"].next();
+          this.render();
+          if (this.state["exercise"].phase.name === "end") {
+            new CustomEvent(EVENT.SETREPS, {
+              detail: {
+                current: this.state["exercise"].phase.reps,
+                goal: this.state["exercise"].goal,
+              },
             });
+          } else if (this.state["exercise"].phase.name === "run") {
             this.$("my-timer").dispatchEvent(
               new CustomEvent(EVENT.SETTIME, {
-                detail: { startTime: this.state["startTime"] },
+                detail: {
+                  time: this.state["runTime"],
+                },
               })
             );
             this.$("my-reps").dispatchEvent(
               new CustomEvent(EVENT.SETREPS, {
                 detail: {
-                  current: this.state["currentReps"],
-                  goal: this.state["goalReps"],
+                  current: this.state["exercise"].phase.reps,
+                  goal: this.state["exercise"].goal,
                 },
               })
             );
+            this.$("my-timer").dispatchEvent(new Event(EVENT.RUN));
+          } else if (this.state["exercise"].phase.name === "break") {
+            this.$("my-timer").dispatchEvent(
+              new CustomEvent(EVENT.SETTIME, {
+                detail: {
+                  time: this.state["breakTime"],
+                },
+              })
+            );
+            this.$("my-timer").dispatchEvent(new Event(EVENT.RUN));
           }
         },
         timerToggle(e) {
-          const $button = this.$("run-and-stop-button.run-and-stop");
-          const $timer = this.$("my-timer");
-
-          const isTimerRun = $timer.getAttribute("is-run") === "true";
-          $timer.dispatchEvent(new Event(isTimerRun ? EVENT.STOP : EVENT.RUN));
-          $button.dispatchEvent(
+          const isTimerRun = this.state["exercise"].isRun;
+          if (isTimerRun) {
+            this.methods.timerStop();
+          } else {
+            this.methods.timerContinue();
+          }
+        },
+        timerStop() {
+          this.state["exercise"].stop();
+          this.$("my-timer").dispatchEvent(new Event(EVENT.STOP));
+          this.$("run-and-stop-button.run-and-stop").dispatchEvent(
             new CustomEvent(EVENT.CHANGE_STATE, {
-              detail: { state: isTimerRun ? "stop" : "run" },
+              detail: { state: "stop" },
+            })
+          );
+        },
+        timerContinue() {
+          this.state["exercise"].continue();
+          this.$("my-timer").dispatchEvent(new Event(EVENT.RUN));
+          this.$("run-and-stop-button.run-and-stop").dispatchEvent(
+            new CustomEvent(EVENT.CHANGE_STATE, {
+              detail: { state: "run" },
             })
           );
         },
