@@ -7,6 +7,7 @@ import repsTemplate from "./src/components/reps/repsTemplate";
 import RunAndStopButton from "./src/components/runAndStopButton/runAndStopButton";
 import Timer from "./src/components/timer/timer";
 import Reps from "./src/components/reps/reps";
+
 import { registApp, registTemplate, render } from "./core";
 import RouterLink from "./src/components/routerLink/routerLink";
 
@@ -21,4 +22,4 @@ window.customElements.define("my-reps", Reps);
 
 window.customElements.define("router-link", RouterLink);
 const app = document.createElement("timer-page");
-document.body.appendChild(app);
+document.body.querySelector("div#app").appendChild(app);

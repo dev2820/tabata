@@ -17,7 +17,7 @@ const phase2text = (phase) => {
   }
 };
 
-export default class App extends Component {
+export default class TimerPage extends Component {
   constructor() {
     super({
       view: () => {
