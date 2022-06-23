@@ -1,3 +1,5 @@
+import { registTemplate } from "/core";
+
 const template = document.createElement("template");
 template.className = "template timer-page";
 template.innerHTML = `
@@ -19,3 +21,4 @@ template.innerHTML = `
 `;
 
 export default template;
+registTemplate(template);

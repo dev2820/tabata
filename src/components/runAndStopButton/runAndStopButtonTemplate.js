@@ -1,3 +1,5 @@
+import { registTemplate } from "/core";
+
 const template = document.createElement("template");
 template.className = "template run-and-stop-button";
 template.innerHTML = `
@@ -8,3 +10,5 @@ template.innerHTML = `
 `;
 
 export default template;
+
+registTemplate(template);

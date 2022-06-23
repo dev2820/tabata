@@ -11,14 +11,8 @@ import RouterLink from "./src/components/routerLink/routerLink";
 
 import Timer from "./src/components/timer/timer";
 import Reps from "./src/components/reps/reps";
-import { registTemplate, Router, registRouter } from "./core";
+import { Router, registRouter } from "./core";
 
 import router from "./src/router";
-
-registTemplate(TimerPageTemplate);
-registTemplate(timerTemplate);
-registTemplate(runAndStopButtonTemplate);
-registTemplate(repsTemplate);
-registTemplate(NotFoundTemplate);
 
 registRouter(new Router(router));

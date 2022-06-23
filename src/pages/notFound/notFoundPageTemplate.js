@@ -1,3 +1,5 @@
+import { registTemplate } from "/core";
+
 const template = document.createElement("template");
 template.className = "template not-found-page";
 template.innerHTML = `
@@ -15,3 +17,4 @@ template.innerHTML = `
 `;
 
 export default template;
+registTemplate(template);
