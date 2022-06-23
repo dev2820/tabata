@@ -2,6 +2,9 @@ const template = document.createElement("template");
 template.className = "template timer-page";
 template.innerHTML = `
 <style></style>
+<header>
+    <router-link to="/timer">타이머 링크</router-link>
+</header>
 <main>
     <section class="timer-zone">
         <h2 class="phase"></h2>

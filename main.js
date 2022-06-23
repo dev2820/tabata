@@ -8,6 +8,7 @@ import RunAndStopButton from "./src/components/runAndStopButton/runAndStopButton
 import Timer from "./src/components/timer/timer";
 import Reps from "./src/components/reps/reps";
 import { registApp, registTemplate, render } from "./core";
+import RouterLink from "./src/components/routerLink/routerLink";
 
 registTemplate(TimerPageTemplate);
 registTemplate(timerTemplate);
@@ -18,5 +19,6 @@ window.customElements.define("run-and-stop-button", RunAndStopButton);
 window.customElements.define("my-timer", Timer);
 window.customElements.define("my-reps", Reps);
 
+window.customElements.define("router-link", RouterLink);
 const app = document.createElement("timer-page");
 document.body.appendChild(app);
