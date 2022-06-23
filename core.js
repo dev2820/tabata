@@ -131,9 +131,10 @@ export class Component extends HTMLElement {
       this.shadowRoot.innerHTML = "";
       this.shadowRoot.appendChild(this.#view());
       this.#created();
+    } else {
+      this.render(this.#connected);
     }
-
-    this.#connected();
+    // this.#connected();
   }
 
   render(callback) {
