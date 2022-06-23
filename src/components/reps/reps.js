@@ -1,4 +1,4 @@
-import { Component } from "../../../core";
+import { Component, loadTemplate } from "../../../core";
 import repsStyle from "./reps.css";
 import EVENT from "../../types/event";
 
@@ -10,11 +10,7 @@ export default class Reps extends Component {
         goal: 0,
       },
       view: () => {
-        const newDOM = document.createElement("div");
-        newDOM.classList.add("reps");
-        newDOM.appendChild(
-          document.querySelector("template.reps").content.cloneNode(true)
-        );
+        const newDOM = loadTemplate("template.reps");
         const $style = newDOM.querySelector("style");
         $style.innerHTML = repsStyle;
         const $currentReps = newDOM.querySelector("span.current-reps");

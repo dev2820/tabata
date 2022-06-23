@@ -1,5 +1,5 @@
 import timerStyle from "./timer.css";
-import { Component, render, changeDiff } from "../../../core";
+import { Component, loadTemplate } from "../../../core";
 import EVENT from "../../types/event";
 import Time from "../../modules/Time";
 
@@ -18,11 +18,8 @@ export default class Timer extends Component {
         phase: "stop",
       },
       view: () => {
-        const $timer = document.createElement("div");
-        $timer.classList.add("timer");
-        $timer.appendChild(
-          document.querySelector("template.timer").content.cloneNode(true)
-        );
+        const $timer = loadTemplate("template.timer");
+
         $timer.classList.add(this.state["phase"]);
         const $style = $timer.querySelector("style");
         $style.innerHTML = timerStyle;

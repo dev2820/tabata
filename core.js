@@ -90,6 +90,11 @@ const isDiff = (nodeA, nodeB) => {
   return false;
 };
 
+export const loadTemplate = (query) => {
+  const temp = document.createElement("div");
+  temp.appendChild(document.querySelector(query).content.cloneNode(true));
+  return temp.firstElementChild;
+};
 export class Component extends HTMLElement {
   $ = (query) => {
     return this.shadowRoot.querySelector(query);

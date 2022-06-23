@@ -1,4 +1,4 @@
-import { Component } from "../../../core";
+import { Component, loadTemplate } from "../../../core";
 import buttonStyle from "./runAndStopButton.css";
 import EVENT from "../../types/event";
 
@@ -9,14 +9,8 @@ export default class RunAndStopButton extends Component {
         isRun: true,
       },
       view: () => {
-        const DOM = document.createElement("div");
-        DOM.className = "run-and-stop";
+        const DOM = loadTemplate("template.run-and-stop-button");
         DOM.classList.add(this.state.isRun ? "run" : "stop");
-        DOM.appendChild(
-          document
-            .querySelector("template.run-and-stop-button")
-            .content.cloneNode(true)
-        );
         const $style = document.createElement("style");
         $style.innerHTML = buttonStyle;
         DOM.querySelector("style").replaceWith($style);

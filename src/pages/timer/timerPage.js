@@ -1,6 +1,6 @@
 import Time from "/src/modules/Time";
 import timerPageStyle from "./timerPage.css";
-import { Component } from "/core";
+import { Component, loadTemplate } from "/core";
 import EVENT from "/src/types/event";
 import Exercise from "../../modules/exercise";
 
@@ -21,11 +21,7 @@ export default class App extends Component {
   constructor() {
     super({
       view: () => {
-        const newDOM = document.createElement("div");
-        newDOM.id = "app";
-        newDOM.appendChild(
-          document.querySelector("template.timer-page").content.cloneNode(true)
-        );
+        const newDOM = loadTemplate("template.timer-page");
         const $style = newDOM.querySelector("style");
         $style.innerHTML = timerPageStyle;
         const $phase = newDOM.querySelector("h2.phase");
