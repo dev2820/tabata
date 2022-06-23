@@ -129,7 +129,7 @@ export class Component extends HTMLElement {
   }
   render(callback) {
     window.requestAnimationFrame(() => {
-      const virtualDOM = this.#view({ state: this.#state });
+      const virtualDOM = this.#view();
       changeDiff(
         this.shadowRoot,
         this.shadowRoot.firstElementChild,
