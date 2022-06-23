@@ -8,6 +8,8 @@ template.innerHTML = `
     <header>
         <router-link to="/timer">타이머 링크</router-link>
         <router-link to="/404">notfound 링크</router-link>
+        <router-link to="/test/1">1번 링크</router-link>
+        <router-link to="/test/2">2번 링크</router-link>
     </header>
     <main>
         <section class="timer-zone">
