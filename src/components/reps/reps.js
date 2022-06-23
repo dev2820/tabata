@@ -25,13 +25,14 @@ export default class Reps extends Component {
 
         return newDOM;
       },
-    });
-
-    this.addEventListener(EVENT.SETREPS, (e) => {
-      this.setState({
-        current: e.detail.current,
-        goal: e.detail.goal,
-      });
+      connected() {
+        this.addEventListener(EVENT.SETREPS, (e) => {
+          this.setState({
+            current: e.detail.current,
+            goal: e.detail.goal,
+          });
+        });
+      },
     });
   }
 }

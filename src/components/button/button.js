@@ -25,7 +25,7 @@ export default class Button extends Component {
         DOM.querySelector("style").replaceWith(style);
         return DOM;
       },
-      created: () => {
+      connected: () => {
         this.addEventListener(EVENT.CHANGE_LABEL, (ce) => {
           this.setState({
             label: ce.detail.newLabel,

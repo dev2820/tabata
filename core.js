@@ -111,7 +111,6 @@ export class Component extends HTMLElement {
   constructor(setup) {
     super();
     if (setup) {
-      setup.created && (this.#created = setup.created.bind(this));
       setup.updated && (this.#updated = setup.updated.bind(this));
       setup.connected && (this.#connected = setup.connected.bind(this));
       setup.state && (this.#state = setup.state);
@@ -122,9 +121,10 @@ export class Component extends HTMLElement {
         this.#methods[methodName] = this.#methods[methodName].bind(this);
       }
     }
-    this.#create();
   }
   connectedCallback() {
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot.appendChild(this.#view());
     this.#connected();
   }
   render(callback) {
@@ -138,14 +138,9 @@ export class Component extends HTMLElement {
       if (callback) callback();
     });
   }
-  #create() {
-    this.attachShadow({ mode: "open" });
-    this.render(this.#created);
-  }
   #update() {
     this.render(this.#updated);
   }
-  #created = function () {}; //second) this에 요소가 render 된 상태 => 내부 요소에 이벤트 등을 addListener,dispatch 해야하면 여기서
   #connected = function () {}; //first) this가 텅 빈 상태 (state 등은 있지만 내부 요소가 없음) => 이벤트 등은 여기서 걸어주자.
   #updated = function () {};
   setView(view) {
