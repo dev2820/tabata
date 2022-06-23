@@ -17,23 +17,21 @@ const phase2text = (phase) => {
   }
 };
 
-const createView = ({ state }) => {
-  const newDOM = document.createElement("div");
-  newDOM.id = "app";
-  newDOM.appendChild(
-    document.querySelector("template.timer-page").content.cloneNode(true)
-  );
-  const $style = newDOM.querySelector("style");
-  $style.innerHTML = timerPageStyle;
-  const $phase = newDOM.querySelector("h2.phase");
-  $phase.innerText = phase2text(state["exercise"].phase.name);
-  return newDOM;
-};
-//phase: run - break - run - break ... - run - end
 export default class App extends Component {
   constructor() {
     super({
-      view: createView,
+      view: () => {
+        const newDOM = document.createElement("div");
+        newDOM.id = "app";
+        newDOM.appendChild(
+          document.querySelector("template.timer-page").content.cloneNode(true)
+        );
+        const $style = newDOM.querySelector("style");
+        $style.innerHTML = timerPageStyle;
+        const $phase = newDOM.querySelector("h2.phase");
+        $phase.innerText = phase2text(this.state["exercise"].phase.name);
+        return newDOM;
+      },
       state: {
         runTime: new Time({ min: 0, sec: 5 }),
         breakTime: new Time({ min: 0, sec: 3 }),

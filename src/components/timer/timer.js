@@ -3,31 +3,6 @@ import { Component, render, changeDiff } from "../../../core";
 import EVENT from "../../types/event";
 import Time from "../../modules/Time";
 
-const createView = ({ props, state }) => {
-  const $timer = document.createElement("div");
-  $timer.classList.add("timer");
-  $timer.appendChild(
-    document.querySelector("template.timer").content.cloneNode(true)
-  );
-  $timer.classList.add(state["phase"]);
-  const $style = $timer.querySelector("style");
-  $style.innerHTML = timerStyle;
-
-  const $minutes = $timer.querySelector("span.minutes");
-  $minutes.innerText = ("00" + (state["time"]?.min || 0)).slice(-2);
-
-  const $seconds = $timer.querySelector("span.seconds");
-  $seconds.innerText = ("00" + (state["time"]?.sec || 0)).slice(-2);
-
-  if (state["time"]?.isLeft({ sec: 0 })) {
-    $timer.classList.remove("stop");
-    $timer.classList.add("end");
-  } else if (state["time"]?.isLeftUnder({ sec: 4 })) {
-    $timer.classList.add("will-be-end");
-  }
-  return $timer;
-};
-
 export default class Timer extends Component {
   static get observedAttributes() {
     return [];
@@ -42,7 +17,30 @@ export default class Timer extends Component {
         time: null,
         phase: "stop",
       },
-      view: createView,
+      view: () => {
+        const $timer = document.createElement("div");
+        $timer.classList.add("timer");
+        $timer.appendChild(
+          document.querySelector("template.timer").content.cloneNode(true)
+        );
+        $timer.classList.add(this.state["phase"]);
+        const $style = $timer.querySelector("style");
+        $style.innerHTML = timerStyle;
+
+        const $minutes = $timer.querySelector("span.minutes");
+        $minutes.innerText = ("00" + (this.state["time"]?.min || 0)).slice(-2);
+
+        const $seconds = $timer.querySelector("span.seconds");
+        $seconds.innerText = ("00" + (this.state["time"]?.sec || 0)).slice(-2);
+
+        if (this.state["time"]?.isLeft({ sec: 0 })) {
+          $timer.classList.remove("stop");
+          $timer.classList.add("end");
+        } else if (this.state["time"]?.isLeftUnder({ sec: 4 })) {
+          $timer.classList.add("will-be-end");
+        }
+        return $timer;
+      },
       connected() {
         this.addEventListener(EVENT.SETTIME, (e) => {
           this.setState({ time: e.detail.time });
