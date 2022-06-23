@@ -39,7 +39,9 @@ export default class App extends Component {
       },
       connected() {
         this.addEventListener(EVENT.TIMEOVER, this.methods.timeoverHandler);
-        this.state["exercise"].next();
+        this.setState({
+          exercise: this.state["exercise"].next(),
+        });
         this.$("my-timer").dispatchEvent(
           new CustomEvent(EVENT.SETTIME, {
             detail: { time: this.state["runTime"] },

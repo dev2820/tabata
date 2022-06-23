@@ -38,11 +38,15 @@ export default class Exercise {
     if (this.phaseHistory[this.phaseHistory.length - 1] !== "stop") {
       this.phaseHistory.push(new Phase("stop", this.phase.reps));
     }
+
+    return this;
   }
   continue() {
     if (this.phaseHistory[this.phaseHistory.length - 1].name === "stop") {
       this.phaseHistory.pop();
     }
+
+    return this;
   }
   next() {
     if (this.isEnd) return;
@@ -53,5 +57,7 @@ export default class Exercise {
       return;
     }
     this.phaseHistory.push(value);
+
+    return this;
   }
 }
