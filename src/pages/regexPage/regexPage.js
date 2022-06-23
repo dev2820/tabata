@@ -5,7 +5,7 @@ export default class RegexPage extends Component {
     super({
       view: () => {
         const template = `
-            <p>url id: ${$route.params.id}</p>
+            <p>url id: ${$route.params?.id}</p>
         `;
         const newDOM = document.createElement("div");
         newDOM.innerHTML = template;

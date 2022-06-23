@@ -227,7 +227,7 @@ export const $route = new Proxy(
   {
     get: function (target, name) {
       if (name === "params") {
-        return router.route.params;
+        return router?.route?.params;
       }
     },
   }
