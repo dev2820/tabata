@@ -30,6 +30,10 @@ export default class App extends Component {
         $style.innerHTML = timerPageStyle;
         const $phase = newDOM.querySelector("h2.phase");
         $phase.innerText = phase2text(this.state["exercise"].phase.name);
+
+        newDOM
+          .querySelector("run-and-stop-button")
+          .addEventListener(EVENT.CLICK, this.methods.timerToggle);
         return newDOM;
       },
       state: {
@@ -55,10 +59,6 @@ export default class App extends Component {
               goal: this.state["exercise"].goal,
             },
           })
-        );
-        this.$("run-and-stop-button").addEventListener(
-          EVENT.CLICK,
-          this.methods.timerToggle
         );
       },
       methods: {
