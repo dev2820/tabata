@@ -8,6 +8,7 @@ import runAndStopButtonTemplate from "./src/components/runAndStopButton/runAndSt
 import repsTemplate from "./src/components/reps/repsTemplate";
 import RunAndStopButton from "./src/components/runAndStopButton/runAndStopButton";
 import RouterLink from "./src/components/routerLink/routerLink";
+import RegexPage from "./src/pages/regexPage/regexPage";
 
 import Timer from "./src/components/timer/timer";
 import Reps from "./src/components/reps/reps";
