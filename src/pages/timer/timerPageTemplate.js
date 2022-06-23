@@ -5,6 +5,7 @@ template.innerHTML = `
     <style></style>
     <header>
         <router-link to="/timer">타이머 링크</router-link>
+        <router-link to="/404">notfound 링크</router-link>
     </header>
     <main>
         <section class="timer-zone">
