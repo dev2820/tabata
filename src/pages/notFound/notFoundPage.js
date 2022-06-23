@@ -14,3 +14,7 @@ export default class NotFound extends Component {
     });
   }
 }
+
+if (!window.customElements["not-found-page"]) {
+  window.customElements.define("not-found-page", NotFound);
+}

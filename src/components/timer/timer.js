@@ -87,3 +87,7 @@ export default class Timer extends Component {
     });
   }
 }
+
+if (!window.customElements["my-timer"]) {
+  window.customElements.define("my-timer", Timer);
+}

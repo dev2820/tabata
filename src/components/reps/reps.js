@@ -32,3 +32,7 @@ export default class Reps extends Component {
     });
   }
 }
+
+if (!window.customElements["my-reps"]) {
+  window.customElements.define("my-reps", Reps);
+}

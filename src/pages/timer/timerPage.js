@@ -127,3 +127,7 @@ export default class TimerPage extends Component {
     });
   }
 }
+
+if (!window.customElements["timer-page"]) {
+  window.customElements.define("timer-page", TimerPage);
+}

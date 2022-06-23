@@ -19,3 +19,7 @@ export default class RouterLink extends Component {
     });
   }
 }
+
+if (!window.customElements["router-link"]) {
+  window.customElements.define("router-link", RouterLink);
+}
