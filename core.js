@@ -199,6 +199,9 @@ export class Router {
     this.container.innerHTML = "";
     this.container.appendChild(currentRoute.component);
   }
+  navigate(to) {
+    window.location.hash = to;
+  }
   constructor({ container = document.body, mode = "hash", routes = [] }) {
     this.container = container;
     this.mode = mode;
