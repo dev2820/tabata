@@ -11,13 +11,7 @@ import RouterLink from "./src/components/routerLink/routerLink";
 
 import Timer from "./src/components/timer/timer";
 import Reps from "./src/components/reps/reps";
-import {
-  registApp,
-  registTemplate,
-  render,
-  Router,
-  registRouter,
-} from "./core";
+import { registTemplate, Router, registRouter } from "./core";
 
 import router from "./src/router";
 

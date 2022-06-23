@@ -1,12 +1,3 @@
-const register = new Map();
-
-export const registApp = (virtualDom) => {
-  register.set("app", virtualDom);
-};
-export const getVirtualDom = (name) => {
-  return register.get(name);
-};
-
 export const render = () => {
   window.requestAnimationFrame(() => {
     const app = document.getElementById("app");
