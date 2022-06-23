@@ -18,7 +18,7 @@ export default class RunAndStopButton extends Component {
         $button.innerText = this.state.isRun ? "정지" : "계속";
         return DOM;
       },
-      connected() {
+      created() {
         this.addEventListener(EVENT.CHANGE_STATE, (ce) => {
           this.setState({
             isRun: ce.detail.state === "run",

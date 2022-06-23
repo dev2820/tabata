@@ -37,7 +37,7 @@ export default class TimerPage extends Component {
         breakTime: new Time({ min: 0, sec: 3 }),
         exercise: new Exercise(3),
       },
-      connected() {
+      created() {
         this.addEventListener(EVENT.TIMEOVER, this.methods.timeoverHandler);
         this.setState({
           exercise: this.state["exercise"].next(),
@@ -57,6 +57,7 @@ export default class TimerPage extends Component {
           })
         );
       },
+      connected() {},
       methods: {
         timeoverHandler(e) {
           this.state["exercise"].next();

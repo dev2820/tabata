@@ -38,7 +38,7 @@ export default class Timer extends Component {
         }
         return $timer;
       },
-      connected() {
+      created() {
         this.addEventListener(EVENT.SETTIME, (e) => {
           this.setState({ time: e.detail.time });
           this.methods.run();

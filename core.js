@@ -116,6 +116,7 @@ export class Component extends HTMLElement {
   constructor(setup) {
     super();
     if (setup) {
+      setup.created && (this.#created = setup.created.bind(this));
       setup.updated && (this.#updated = setup.updated.bind(this));
       setup.connected && (this.#connected = setup.connected.bind(this));
       setup.state && (this.#state = setup.state);
@@ -128,10 +129,16 @@ export class Component extends HTMLElement {
     }
   }
   connectedCallback() {
-    this.attachShadow({ mode: "open" });
-    this.shadowRoot.appendChild(this.#view());
+    if (!this.shadowRoot) {
+      this.attachShadow({ mode: "open" });
+      this.shadowRoot.innerHTML = "";
+      this.shadowRoot.appendChild(this.#view());
+      this.#created();
+    }
+
     this.#connected();
   }
+
   render(callback) {
     window.requestAnimationFrame(() => {
       const virtualDOM = this.#view();
@@ -143,6 +150,7 @@ export class Component extends HTMLElement {
       if (callback) callback();
     });
   }
+  #created = function () {};
   #update() {
     this.render(this.#updated);
   }
