@@ -173,3 +173,47 @@ export class Component extends HTMLElement {
     this.#update();
   }
 }
+
+/*
+@params 
+- mode: <'hash'|'history'> / hash모드로 동작할지 history모드로 동작할지 결정하는 옵션
+*/
+export class Router {
+  container = null;
+  mode = "hash";
+  routes = [];
+  notFound = () => {
+    this.container.textContent = "Page Not Found";
+  };
+
+  router = {};
+  checkRoute() {
+    const currentRoute = this.routes.find((route) => {
+      return "#" + route.path === window.location.hash;
+    });
+
+    if (!currentRoute) {
+      this.notFound();
+      return;
+    }
+    this.container.innerHTML = "";
+    this.container.appendChild(currentRoute.component);
+  }
+  constructor({ container = document.body, mode = "hash", routes = [] }) {
+    this.container = container;
+    this.mode = mode;
+    this.routes = routes;
+    window.addEventListener("hashchange", this.checkRoute.bind(this));
+    console.log(window.location.hash);
+    if (!window.location.hash) {
+      window.location.hash = "#/";
+    }
+
+    this.checkRoute();
+  }
+}
+
+let router = null;
+export const registRouter = (newRouter) => {
+  router = newRouter;
+};
