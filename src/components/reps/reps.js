@@ -27,7 +27,6 @@ export default class Reps extends Component {
       },
       connected() {
         this.addEventListener(EVENT.SETREPS, (e) => {
-          console.log(e.detail);
           this.setState({
             current: e.detail.current,
             goal: e.detail.goal,
