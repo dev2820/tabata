@@ -1,5 +1,5 @@
 import timerStyle from "./timer.css";
-import { Component, loadTemplate } from "../../../core";
+import { Component, loadTemplate, registComponent } from "../../../core";
 import EVENT from "../../types/event";
 import Time from "../../modules/Time";
 
@@ -88,6 +88,4 @@ export default class Timer extends Component {
   }
 }
 
-if (!window.customElements["my-timer"]) {
-  window.customElements.define("my-timer", Timer);
-}
+registComponent("my-timer", Timer);

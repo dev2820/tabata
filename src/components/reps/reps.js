@@ -1,4 +1,4 @@
-import { Component, loadTemplate } from "../../../core";
+import { Component, loadTemplate, registComponent } from "../../../core";
 import repsStyle from "./reps.css";
 import EVENT from "../../types/event";
 
@@ -32,7 +32,4 @@ export default class Reps extends Component {
     });
   }
 }
-
-if (!window.customElements["my-reps"]) {
-  window.customElements.define("my-reps", Reps);
-}
+registComponent("my-reps", Reps);

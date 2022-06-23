@@ -1,4 +1,4 @@
-import { Component, loadTemplate } from "../../../core";
+import { Component, loadTemplate, registComponent } from "../../../core";
 import buttonStyle from "./runAndStopButton.css";
 import EVENT from "../../types/event";
 
@@ -29,6 +29,4 @@ export default class RunAndStopButton extends Component {
   }
 }
 
-if (!window.customElements["run-and-stop-button"]) {
-  window.customElements.define("run-and-stop-button", RunAndStopButton);
-}
+registComponent("run-and-stop-button", RunAndStopButton);

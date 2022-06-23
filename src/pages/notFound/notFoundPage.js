@@ -1,5 +1,5 @@
 import notFoundPageStyle from "./notFound.css";
-import { Component, loadTemplate } from "/core";
+import { Component, loadTemplate, registComponent } from "/core";
 
 export default class NotFound extends Component {
   constructor() {
@@ -15,6 +15,4 @@ export default class NotFound extends Component {
   }
 }
 
-if (!window.customElements["not-found-page"]) {
-  window.customElements.define("not-found-page", NotFound);
-}
+registComponent("not-found-page", NotFound);

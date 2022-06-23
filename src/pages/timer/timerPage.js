@@ -1,6 +1,6 @@
 import Time from "/src/modules/Time";
 import timerPageStyle from "./timerPage.css";
-import { Component, loadTemplate } from "/core";
+import { Component, loadTemplate, registComponent } from "/core";
 import EVENT from "/src/types/event";
 import Exercise from "../../modules/exercise";
 
@@ -128,6 +128,4 @@ export default class TimerPage extends Component {
   }
 }
 
-if (!window.customElements["timer-page"]) {
-  window.customElements.define("timer-page", TimerPage);
-}
+registComponent("timer-page", TimerPage);

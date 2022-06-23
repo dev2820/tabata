@@ -95,6 +95,12 @@ export const loadTemplate = (query) => {
   temp.appendChild(document.querySelector(query).content.cloneNode(true));
   return temp.firstElementChild;
 };
+
+export const registComponent = (name, component) => {
+  if (!window.customElements[name]) {
+    window.customElements.define(name, component);
+  }
+};
 export class Component extends HTMLElement {
   $ = (query) => {
     return this.shadowRoot.querySelector(query);

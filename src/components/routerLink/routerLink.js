@@ -1,4 +1,4 @@
-import { Component } from "../../../core";
+import { Component, registComponent } from "../../../core";
 export default class RouterLink extends Component {
   constructor() {
     super({
@@ -20,6 +20,4 @@ export default class RouterLink extends Component {
   }
 }
 
-if (!window.customElements["router-link"]) {
-  window.customElements.define("router-link", RouterLink);
-}
+registComponent("router-link", RouterLink);
