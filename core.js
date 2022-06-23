@@ -179,11 +179,16 @@ export class Router {
   container = null;
   mode = "hash";
   routes = [];
-  notFound = () => {
-    this.container.textContent = "Page Not Found";
-  };
 
   router = {};
+  get route() {
+    return this.routes.find((route) => {
+      return "#" + route.path === window.location.hash;
+    });
+  }
+  notFound() {
+    this.container.textContent = "Page Not Found";
+  }
   checkRoute() {
     const currentRoute = this.routes.find((route) => {
       return "#" + route.path === window.location.hash;
@@ -208,7 +213,6 @@ export class Router {
     if (!window.location.hash) {
       window.location.hash = "#/";
     }
-
     this.checkRoute();
   }
 }
@@ -217,3 +221,14 @@ let router = null;
 export const registRouter = (newRouter) => {
   router = newRouter;
 };
+
+export const $route = new Proxy(
+  {},
+  {
+    get: function (target, name) {
+      if (name === "params") {
+        return router.route.params;
+      }
+    },
+  }
+);
