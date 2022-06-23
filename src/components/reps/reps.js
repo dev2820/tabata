@@ -17,16 +17,17 @@ export default class Reps extends Component {
         );
         const $style = newDOM.querySelector("style");
         $style.innerHTML = repsStyle;
-        const $currentReps = newDOM.querySelector("span");
-        $currentReps.className = "current";
+        const $currentReps = newDOM.querySelector("span.current-reps");
         $currentReps.innerText = this.state["current"];
-        newDOM.innerHTML =
-          newDOM.innerHTML.trim() + `/${this.state["goal"]} reps`;
+
+        const $goalReps = newDOM.querySelector("span.goal-reps");
+        $goalReps.innerText = `/${this.state["goal"]} reps`;
 
         return newDOM;
       },
       connected() {
         this.addEventListener(EVENT.SETREPS, (e) => {
+          console.log(e.detail);
           this.setState({
             current: e.detail.current,
             goal: e.detail.goal,

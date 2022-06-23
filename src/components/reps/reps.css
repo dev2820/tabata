@@ -2,6 +2,6 @@
     font-size:2rem;
     font-family:'RobotoMono';
 }
-.reps > span.current {
+.reps > span.current-reps {
     font-size:4rem;
 }
