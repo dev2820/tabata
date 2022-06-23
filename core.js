@@ -233,7 +233,7 @@ export class Router {
         .replace(/\//g, "\\/");
 
       return {
-        testRegExp: new RegExp(`^#${parsedPath}`),
+        testRegExp: new RegExp(`^#${parsedPath}$`),
         params,
         component,
       };
