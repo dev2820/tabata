@@ -60,8 +60,9 @@ export default class TimerPage extends Component {
       connected() {},
       methods: {
         timeoverHandler(e) {
-          this.state["exercise"].next();
-          this.render();
+          this.setState({
+            exercise: this.state["exercise"].next(),
+          });
           if (this.state["exercise"].phase.name === "end") {
             new CustomEvent(EVENT.SETREPS, {
               detail: {
