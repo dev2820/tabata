@@ -1,10 +1,3 @@
-export const render = () => {
-  window.requestAnimationFrame(() => {
-    const app = document.getElementById("app");
-    const virtualApp = getVirtualDom("app");
-    changeDiff(document.body, app, virtualApp.view());
-  });
-};
 export const registTemplate = (template) => {
   document.body.appendChild(template);
 };
@@ -132,12 +125,12 @@ export class Component extends HTMLElement {
       this.shadowRoot.appendChild(this.#view());
       this.#created();
     } else {
-      this.render(this.#connected);
+      this.#render(this.#connected);
     }
     // this.#connected();
   }
 
-  render(callback) {
+  #render(callback) {
     window.requestAnimationFrame(() => {
       const virtualDOM = this.#view();
       changeDiff(
@@ -150,7 +143,7 @@ export class Component extends HTMLElement {
   }
   #created = function () {};
   #update() {
-    this.render(this.#updated);
+    this.#render(this.#updated);
   }
   #connected = function () {}; //first) this가 텅 빈 상태 (state 등은 있지만 내부 요소가 없음) => 이벤트 등은 여기서 걸어주자.
   #updated = function () {};
