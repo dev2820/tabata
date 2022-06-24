@@ -85,6 +85,11 @@ export const registComponent = (name, component) => {
     window.customElements.define(name, component);
   }
 };
+
+let deepCopy = (obj) => {
+  return Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
+};
+
 export class Component extends HTMLElement {
   $ = (query) => {
     return this.shadowRoot.querySelector(query);
@@ -93,7 +98,7 @@ export class Component extends HTMLElement {
     return this.shadowRoot.firstElementChild;
   }
   get state() {
-    return this.#state;
+    return Object.freeze(deepCopy(this.#state));
   }
   get methods() {
     return this.#methods;
@@ -127,7 +132,6 @@ export class Component extends HTMLElement {
     } else {
       this.#render(this.#connected);
     }
-    // this.#connected();
   }
 
   #render(callback) {
