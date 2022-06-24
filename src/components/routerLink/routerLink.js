@@ -1,4 +1,4 @@
-import { Component, registComponent } from "../../../core";
+import { Component, registComponent, $router } from "../../../core";
 export default class RouterLink extends Component {
   constructor() {
     super({
@@ -11,10 +11,16 @@ export default class RouterLink extends Component {
         const temp = document.createElement("div");
         temp.innerHTML = template;
         const newDOM = temp.firstElementChild;
-        newDOM.href = "#" + this.getAttribute("to");
-        newDOM.innerHTML = template;
-        console.log(newDOM);
+        newDOM.href = this.getAttribute("to");
         return newDOM;
+      },
+      created() {
+        this.addEventListener("click", (e) => {
+          e.preventDefault();
+          if ($router.mode === "hash") {
+            $router.navigate("#" + this.getAttribute("to"));
+          }
+        });
       },
     });
   }

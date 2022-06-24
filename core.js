@@ -294,7 +294,7 @@ export class HistoryRouter extends Router {
       mode: "history",
       routes: newRoutes,
     });
-
+    // window.setInterval(this.checkRoute, 250);
     if (!window.location.pathname) {
       window.location.pathname = "/";
     }
@@ -345,6 +345,14 @@ export const registRouter = (newRouter) => {
   router = newRouter;
 };
 
+export const $router = new Proxy(
+  {},
+  {
+    get: function (target, name) {
+      return router[name];
+    },
+  }
+);
 export const $route = new Proxy(
   {},
   {
