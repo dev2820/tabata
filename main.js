@@ -12,8 +12,8 @@ import RegexPage from "./src/pages/regexPage/regexPage";
 
 import Timer from "./src/components/timer/timer";
 import Reps from "./src/components/reps/reps";
-import { Router, registRouter } from "./core";
+import { createRouter, registRouter } from "./core";
 
 import router from "./src/router";
 
-registRouter(new Router(router));
+registRouter(createRouter(router));

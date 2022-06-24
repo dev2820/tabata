@@ -174,41 +174,26 @@ export class Component extends HTMLElement {
 
 const ROUTE_PARAMETER_REGEXP = /:(\w+)/g;
 const URL_FRAGMENT_REGEXP = "([^\\/]+)";
-const extractUrlParams = (route, windowHash) => {
-  if (route.params.length === 0) {
-    return {};
-  }
-  const params = {};
-  const matches = windowHash.match(route.testRegExp);
-
-  matches.shift(); // 불필요한 정보 제거
-  matches.forEach((paramValue, index) => {
-    const paramName = route.params[index];
-    params[paramName] = paramValue;
-  });
-
-  return params;
-};
 /*
 @params 
 - mode: <'hash'|'history'> / hash모드로 동작할지 history모드로 동작할지 결정하는 옵션
 */
-export class Router {
+class Router {
   container = null;
   mode = "hash";
   routes = [];
 
   router = {};
-  get currentRoute() {
+  _findRoute(path) {
     return this.routes.find((route) => {
-      return route.testRegExp.test(window.location.hash);
+      return route.testRegExp.test(path);
     });
   }
   notFound() {
     this.container.textContent = "Page Not Found";
   }
 
-  checkRoute() {
+  _checkRoute() {
     if (!this.currentRoute) {
       this.notFound();
       return;
@@ -217,13 +202,41 @@ export class Router {
     this.container.innerHTML = "";
     this.container.appendChild(this.currentRoute.component);
   }
+  _extractUrlParams(route, pathname) {
+    const params = {};
+    if (route.params.length === 0) {
+      return params;
+    }
+    const matches = pathname.match(route.testRegExp);
+
+    matches.shift(); // 불필요한 정보 제거
+    matches.forEach((paramValue, index) => {
+      const paramName = route.params[index];
+      params[paramName] = paramValue;
+    });
+
+    return params;
+  }
+  constructor({ container = document.body, mode, routes }) {
+    this.container = container;
+    this.mode = mode;
+    this.routes = routes;
+  }
+}
+
+export class HashRouter extends Router {
+  router = {};
+  get currentRoute() {
+    return super._findRoute(window.location.hash);
+  }
   navigate(to) {
     window.location.hash = to;
   }
-  constructor({ container = document.body, mode = "hash", routes = [] }) {
-    this.container = container;
-    this.mode = mode;
-    this.routes = routes.map(({ path, component }) => {
+  extractUrlParams() {
+    return super._extractUrlParams(this.currentRoute, window.location.hash);
+  }
+  constructor({ container = document.body, routes }) {
+    const newRoutes = routes.map(({ path, component }) => {
       const params = [];
       const parsedPath = path
         .replace(ROUTE_PARAMETER_REGEXP, (match, paramName) => {
@@ -238,15 +251,96 @@ export class Router {
         component,
       };
     });
-    window.addEventListener("hashchange", this.checkRoute.bind(this));
+
+    super({
+      container,
+      mode: "hash",
+      routes: newRoutes,
+    });
+    window.addEventListener("hashchange", super._checkRoute.bind(this));
     if (!window.location.hash) {
       window.location.hash = "#/";
     }
+
+    super._checkRoute();
+  }
+}
+export class HistoryRouter extends Router {
+  router = {};
+  lastPathName = "";
+
+  get currentRoute() {
+    return super._findRoute(window.location.pathname);
+  }
+  constructor({ container = document.body, routes = [] }) {
+    const newRoutes = routes.map(({ path, component }) => {
+      const params = [];
+      const parsedPath = path
+        .replace(ROUTE_PARAMETER_REGEXP, (match, paramName) => {
+          params.push(paramName);
+          return URL_FRAGMENT_REGEXP;
+        })
+        .replace(/\//g, "\\/");
+
+      return {
+        testRegExp: new RegExp(`^${parsedPath}$`),
+        params,
+        component,
+      };
+    });
+
+    super({
+      container,
+      mode: "history",
+      routes: newRoutes,
+    });
+
+    if (!window.location.pathname) {
+      window.location.pathname = "/";
+    }
     this.checkRoute();
+  }
+
+  checkRoute() {
+    if (this.lastPathName === window.location.pathname) {
+      return;
+    }
+
+    this.lastPathName = window.location.pathname;
+
+    super._checkRoute();
+  }
+
+  extractUrlParams() {
+    return super._extractUrlParams(this.currentRoute, window.location.pathname);
+  }
+  go(index) {
+    window.history.go(index);
+  }
+  back() {
+    window.history.back();
+  }
+  forward() {
+    window.history.forward();
+  }
+  push(to) {
+    window.history.pushState(null, "", to);
+  }
+  replace() {
+    window.history.replaceState(null, "", to);
   }
 }
 
 let router = null;
+export const createRouter = (options) => {
+  if (options.mode === "history") {
+    return new HistoryRouter(options);
+  } else if (options.mode === "hash") {
+    return new HashRouter(options);
+  } else {
+    throw Error(`${options.mode} is not defined`);
+  }
+};
 export const registRouter = (newRouter) => {
   router = newRouter;
 };
@@ -256,11 +350,8 @@ export const $route = new Proxy(
   {
     get: function (target, name) {
       if (name === "params") {
-        if (router !== null) {
-          const urlParams = extractUrlParams(
-            router.currentRoute,
-            window.location.hash
-          );
+        if (router instanceof Router) {
+          const urlParams = router.extractUrlParams();
           return urlParams;
         }
         return {};
