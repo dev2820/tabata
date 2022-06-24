@@ -49,12 +49,12 @@ export default class Exercise {
     return this;
   }
   next() {
-    if (this.isEnd) return;
+    if (this.isEnd) return this;
 
     let { value, done } = this.#phaseGenerator.next();
     if (done) {
       this.phaseHistory.push(new Phase("end", this.phase.reps));
-      return;
+      return this;
     }
     this.phaseHistory.push(value);
 
