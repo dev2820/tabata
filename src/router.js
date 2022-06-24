@@ -1,6 +1,6 @@
 export default {
   container: document.querySelector("div#app"),
-  mode: "hash",
+  mode: "history",
   routes: [
     { path: "/", component: document.createElement("timer-page") },
     { path: "/test/:id", component: document.createElement("regex-page") },

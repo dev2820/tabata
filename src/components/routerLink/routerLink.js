@@ -19,6 +19,8 @@ export default class RouterLink extends Component {
           e.preventDefault();
           if ($router.mode === "hash") {
             $router.navigate("#" + this.getAttribute("to"));
+          } else if ($router.mode === "history") {
+            $router.push(this.getAttribute("to"));
           }
         });
       },

@@ -294,20 +294,11 @@ export class HistoryRouter extends Router {
       mode: "history",
       routes: newRoutes,
     });
-    // window.setInterval(this.checkRoute, 250);
-    if (!window.location.pathname) {
-      window.location.pathname = "/";
-    }
+    window.addEventListener("popstate", this.checkRoute.bind(this));
     this.checkRoute();
   }
 
   checkRoute() {
-    if (this.lastPathName === window.location.pathname) {
-      return;
-    }
-
-    this.lastPathName = window.location.pathname;
-
     super._checkRoute();
   }
 
@@ -316,18 +307,23 @@ export class HistoryRouter extends Router {
   }
   go(index) {
     window.history.go(index);
+    this.checkRoute();
   }
   back() {
     window.history.back();
+    this.checkRoute();
   }
   forward() {
     window.history.forward();
+    this.checkRoute();
   }
   push(to) {
     window.history.pushState(null, "", to);
+    this.checkRoute();
   }
-  replace() {
+  replace(to) {
     window.history.replaceState(null, "", to);
+    this.checkRoute();
   }
 }
 
