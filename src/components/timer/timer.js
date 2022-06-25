@@ -19,7 +19,6 @@ export default class Timer extends Component {
       state: {
         interval: null,
         time: null,
-        isRun: false,
       },
       store: {
         exercise: useGlobalStore("exercise"),
@@ -46,19 +45,33 @@ export default class Timer extends Component {
         return $timer;
       },
       created() {
+        this.store["exercise"].registWatcher("isRun", (oldValue, newValue) => {
+          if (newValue) {
+            this.methods.run();
+          } else {
+            this.methods.stop();
+          }
+          // this.methods.run
+        });
         this.setState({
           time: this.store["exercise"].getState().getCurrentPhase().time,
         });
-        this.methods.run();
+        this.store["exercise"].dispatch({
+          type: EVENT_TYPES.RUN,
+        });
       },
       methods: {
         riseTimeover() {
-          this.methods.stop();
+          // this.methods.stop();
+          this.store["exercise"].dispatch({
+            type: EVENT_TYPES.STOP,
+          });
+
           this.store["exercise"].dispatch({
             type: EVENT_TYPES.NEXT_PHASE,
           });
 
-          const isEnd = this.store["exercise"].getState().isEnd();
+          const isEnd = this.store["exercise"].getState().isEndPhase();
           const currentPhase = this.store["exercise"]
             .getState()
             .getCurrentPhase();
@@ -72,14 +85,14 @@ export default class Timer extends Component {
             phase: currentPhase,
           });
 
-          this.methods.run();
+          this.store["exercise"].dispatch({
+            type: EVENT_TYPES.RUN,
+          });
         },
         run() {
-          const { time, isRun } = this.state;
+          const { time } = this.state;
           //시간이 없어서 타이머를 못킴
           if (!time || time.isLeft({ sec: 0 })) return;
-          //이미 돌고있어서 타이머를 못킴
-          if (isRun) return;
 
           this.setState({
             interval: setInterval(() => {
@@ -90,14 +103,10 @@ export default class Timer extends Component {
                 this.methods.riseTimeover();
               }
             }, 1000),
-            isRun: true,
           });
         },
         stop() {
           clearInterval(this.state["interval"]);
-          this.setState({
-            isRun: false,
-          });
         },
       },
     });
