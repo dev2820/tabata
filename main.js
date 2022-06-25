@@ -12,8 +12,13 @@ import RegexPage from "./src/pages/regexPage/regexPage";
 
 import Timer from "./src/components/timer/timer";
 import Reps from "./src/components/reps/reps";
-import { createRouter, registRouter } from "./core";
+import counterFactory from "./src/stores/counter";
+import eventbusFactory from "./eventbus";
+import { createRouter, registRouter, registGlobalStore } from "./core";
 
 import router from "./src/router";
 
+let counter = counterFactory();
+
+registGlobalStore("counter", eventbusFactory(counter));
 registRouter(createRouter(router));
