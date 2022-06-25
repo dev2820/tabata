@@ -1,6 +1,10 @@
-import { Component, loadTemplate, registComponent } from "../../../core";
+import {
+  Component,
+  loadTemplate,
+  registComponent,
+  useGlobalStore,
+} from "../../../core";
 import repsStyle from "./reps.css";
-import EVENT from "../../types/event";
 
 export default class Reps extends Component {
   constructor() {
@@ -9,25 +13,25 @@ export default class Reps extends Component {
         current: 0,
         goal: 0,
       },
+      store: {
+        exercise: useGlobalStore("exercise"),
+      },
       view: () => {
+        const currentReps = this.store["exercise"]
+          .getState()
+          .getCurrentPhase().reps;
+
+        const goal = this.store["exercise"].getState().goal;
         const newDOM = loadTemplate("template.reps");
         const $style = newDOM.querySelector("style");
         $style.innerHTML = repsStyle;
         const $currentReps = newDOM.querySelector("span.current-reps");
-        $currentReps.innerText = this.state["current"];
+        $currentReps.innerText = currentReps;
 
         const $goalReps = newDOM.querySelector("span.goal-reps");
-        $goalReps.innerText = `/${this.state["goal"]} reps`;
+        $goalReps.innerText = `/${goal} reps`;
 
         return newDOM;
-      },
-      created() {
-        this.addEventListener(EVENT.SETREPS, (e) => {
-          this.setState({
-            current: e.detail.current,
-            goal: e.detail.goal,
-          });
-        });
       },
     });
   }
