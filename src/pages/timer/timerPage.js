@@ -6,22 +6,7 @@ import {
   registComponent,
   useGlobalStore,
 } from "/core";
-import EVENT from "/src/types/event";
-import Exercise from "../../modules/exercise";
 import { EVENT_TYPES } from "../../stores/exercise";
-
-const phase2text = (phase) => {
-  switch (phase) {
-    case "run":
-      return "운동";
-    case "break":
-      return "휴식";
-    case "end":
-      return "종료";
-    case "stop":
-      return "정지";
-  }
-};
 
 export default class TimerPage extends Component {
   constructor() {
@@ -36,6 +21,7 @@ export default class TimerPage extends Component {
     });
     super({
       view: () => {
+        const { isRun } = this.store["exercise"].getState();
         const newDOM = loadTemplate("template.timer-page");
         const $style = newDOM.querySelector("style");
         $style.innerHTML = timerPageStyle;
@@ -44,20 +30,18 @@ export default class TimerPage extends Component {
           .getState()
           .getCurrentPhase().name;
 
-        newDOM
-          .querySelector("button.run-and-stop")
-          .addEventListener("click", this.methods.timerToggle);
+        const $button = newDOM.querySelector("button.run-and-stop");
+        $button.classList.add(isRun ? "run" : "stop");
+        $button.innerText = isRun ? "정지" : "계속";
+        $button.addEventListener("click", this.methods.timerToggle);
         return newDOM;
       },
       store: {
         exercise: useGlobalStore("exercise"),
       },
-      state: {
-        isRun: false,
-      },
       methods: {
         timerToggle(e) {
-          const isTimerRun = this.state["isRun"];
+          const isTimerRun = this.store["exercise"].getState().isRun;
           if (isTimerRun) {
             this.methods.timerStop();
           } else {
@@ -65,12 +49,14 @@ export default class TimerPage extends Component {
           }
         },
         timerStop() {
-          this.state["exercise"].stop();
-          this.$("my-timer").dispatchEvent(new Event(EVENT.STOP));
+          this.store["exercise"].dispatch({
+            type: EVENT_TYPES.STOP,
+          });
         },
         timerContinue() {
-          this.state["exercise"].continue();
-          this.$("my-timer").dispatchEvent(new Event(EVENT.RUN));
+          this.store["exercise"].dispatch({
+            type: EVENT_TYPES.RUN,
+          });
         },
       },
     });

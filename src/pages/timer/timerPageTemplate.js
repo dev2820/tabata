@@ -15,7 +15,7 @@ template.innerHTML = `
             <h2 class="phase"></h2>
             <my-timer class="timer"></my-timer>
             <my-reps></my-reps>
-            <run-and-stop-button class="run-and-stop"></run-and-stop-button>
+            <button class="run-and-stop">정지</button>
         </section>
     </main>
 </div>
