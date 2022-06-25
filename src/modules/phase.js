@@ -1,11 +1,16 @@
 import Time from "./Time";
-
+const en2kor = {
+  start: "시작",
+  break: "휴식중",
+  run: "운동중",
+  end: "종료",
+};
 export default class Phase {
   reps = 0;
   name = "";
   time = new Time({ sec: 0 });
   constructor(phaseName, reps, time) {
-    this.name = phaseName;
+    this.name = en2kor[phaseName];
     this.reps = reps;
     this.time = time;
   }
