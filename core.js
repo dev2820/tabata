@@ -103,7 +103,12 @@ export class Component extends HTMLElement {
   get methods() {
     return this.#methods;
   }
+  get store() {
+    return this.#store;
+  }
+  #unsubscribeList = new Map();
   #state = {};
+  #store = {};
   #methods = {};
   #view = () => {
     return null;
@@ -117,10 +122,24 @@ export class Component extends HTMLElement {
       setup.state && (this.#state = setup.state);
       setup.methods && (this.#methods = setup.methods);
       setup.view && (this.#view = setup.view);
+      setup.store && (this.#store = setup.store);
 
       for (let methodName in this.#methods) {
         this.#methods[methodName] = this.#methods[methodName].bind(this);
       }
+
+      for (let storeName in this.#store) {
+        let unsubscribe = this.#store[storeName].subscribe(
+          this.#render.bind(this)
+        );
+        this.#unsubscribeList.set(storeName, unsubscribe);
+      }
+    }
+  }
+  unsubscribe(name) {
+    if (this.#unsubscribeList.has(name)) {
+      this.#unsubscribeList.get(name)();
+      this.#unsubscribeList.delete(name);
     }
   }
   connectedCallback() {
@@ -245,7 +264,7 @@ export class HashRouter extends Router {
       return {
         testRegExp: new RegExp(`^#${parsedPath}$`),
         params,
-        component,
+        component: component(),
       };
     });
 
@@ -282,7 +301,7 @@ export class HistoryRouter extends Router {
       return {
         testRegExp: new RegExp(`^${parsedPath}$`),
         params,
-        component,
+        component: component(),
       };
     });
 
@@ -360,3 +379,12 @@ export const $route = new Proxy(
     },
   }
 );
+
+let globalStore = new Map();
+export const registGlobalStore = (name, newStore) => {
+  globalStore.set(name, newStore);
+};
+
+export const useGlobalStore = (name) => {
+  return globalStore.get(name);
+};
