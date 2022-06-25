@@ -12,6 +12,10 @@ test("Time module create test", () => {
   let longTime = new Time({ hr: 8, min: 30, sec: 29 });
   expect(longTime.toString()).toBe("+08:30:29");
 
+  //milliSec은 toString에 포함되지 않는다
+  let milliSecTime = new Time({ sec: 1, milliSec: 500 });
+  expect(milliSecTime.toString()).toBe("+00:00:01");
+
   let minusTime = new Time({ sec: -100 }); // 음수 시간도 설정 가능
   expect(minusTime.toString()).toBe("-00:01:40");
 });
@@ -37,4 +41,9 @@ test("Time module left test", () => {
 
   let zeroTime = new Time({ sec: 0 });
   expect(zeroTime.isLeft({ sec: 0 })).toBe(true);
+
+  let time500ms = new Time({ milliSec: 500 });
+  expect(time500ms.isLeft({ milliSec: 500 })).toBe(true);
+  expect(time500ms.isLeftUnder({ sec: 1 })).toBe(true);
+  expect(time500ms.isLeft({ sec: 0 })).toBe(false);
 });
