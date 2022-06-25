@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import { expect } from "expect";
-import Time from "../../src/modules/Time";
+import Time from "../../src/modules/time";
 import Timer from "../../src/components/timer/timer";
 import { jest } from "@jest/globals";
 import { registApp, registTemplate, render } from "../../core";

@@ -1,5 +1,5 @@
 import { expect } from "expect";
-import Time from "../src/modules/Time";
+import Time from "../src/modules/time";
 
 let clone = (orig) => {
   return Object.assign(Object.create(Object.getPrototypeOf(orig)), orig);

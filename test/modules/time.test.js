@@ -1,5 +1,5 @@
 import { expect } from "expect";
-import Time from "../../src/modules/Time";
+import Time from "../../src/modules/time";
 
 test("Time module create test", () => {
   let timeBeZero = new Time({}); // 기본적으로 0시로 초기화됨

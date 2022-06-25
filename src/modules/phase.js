@@ -1,4 +1,4 @@
-import Time from "./Time";
+import Time from "./time";
 const en2kor = {
   start: "시작",
   break: "휴식중",

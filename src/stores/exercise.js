@@ -1,4 +1,4 @@
-import Time from "../modules/Time";
+import Time from "../modules/time";
 import { RunPhase, BreakPhase, StartPhase, EndPhase } from "../modules/phase";
 //event == action 이다
 const INITIAL_STATE = {
