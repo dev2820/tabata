@@ -1,8 +1,14 @@
 import Time from "/src/modules/Time";
 import timerPageStyle from "./timerPage.css";
-import { Component, loadTemplate, registComponent } from "/core";
+import {
+  Component,
+  loadTemplate,
+  registComponent,
+  useGlobalStore,
+} from "/core";
 import EVENT from "/src/types/event";
 import Exercise from "../../modules/exercise";
+import { EVENT_TYPES } from "../../stores/exercise";
 
 const phase2text = (phase) => {
   switch (phase) {
@@ -19,18 +25,32 @@ const phase2text = (phase) => {
 
 export default class TimerPage extends Component {
   constructor() {
+    const exercise = useGlobalStore("exercise");
+    exercise.dispatch({
+      type: EVENT_TYPES.INIT_EXERCISE,
+      payload: {
+        runTime: new Time({ min: 0, sec: 6 }),
+        breakTime: new Time({ min: 0, sec: 4 }),
+        goal: 3,
+      },
+    });
     super({
       view: () => {
         const newDOM = loadTemplate("template.timer-page");
         const $style = newDOM.querySelector("style");
         $style.innerHTML = timerPageStyle;
         const $phase = newDOM.querySelector("h2.phase");
-        $phase.innerText = phase2text(this.state["exercise"].phase.name);
+        $phase.innerText = this.store["exercise"]
+          .getState()
+          .getCurrentPhase().name;
 
         newDOM
           .querySelector("run-and-stop-button")
           .addEventListener(EVENT.CLICK, this.methods.timerToggle);
         return newDOM;
+      },
+      store: {
+        exercise: useGlobalStore("exercise"),
       },
       state: {
         runTime: new Time({ min: 0, sec: 5 }),

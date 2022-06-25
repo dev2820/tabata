@@ -7,38 +7,33 @@ const INITIAL_STATE = {
   goal: 0,
   phaseList: [],
   currentPhaseIndex: 0,
-  get currentPhase() {
+  getCurrentPhase() {
     return this.phaseList[this.currentPhaseIndex];
   },
-  get currentReps() {
-    return this.currentPhase?.reps;
-  },
-  get isStart() {
+  isStart() {
     return this.currentPhase instanceof StartPhase;
   },
-  get isRun() {
+  isRun() {
     return this.currentPhase instanceof RunPhase;
   },
-  get isBreak() {
+  isBreak() {
     return this.currentPhase instanceof BreakPhase;
   },
-  get isEnd() {
+  isEnd() {
     return this.currentPhase instanceof EndPhase;
   },
 };
-const makePhaseList = (goal) => {
+const makePhaseList = ({ goal, runTime, breakTime }) => {
   if (goal < 1) return null;
 
-  let reps = 0;
+  let reps = 1;
   const list = [];
-  list.push(new StartPhase(reps));
-  reps++;
   for (let i = 0; i < goal - 1; i++) {
-    list.push(new RunPhase(reps));
-    list.push(new BreakPhase(reps));
+    list.push(new RunPhase(reps, runTime));
+    list.push(new BreakPhase(reps, breakTime));
     reps++;
   }
-  list.push(new RunPhase(reps));
+  list.push(new RunPhase(reps, runTime));
   list.push(new EndPhase(reps));
 
   return list;
@@ -49,13 +44,13 @@ const initExercise = (state, action) => {
     return state;
   }
 
-  const newPhaseList = makePhaseList(goal);
-  const newState = _.deepCopy(state);
-  newState.runTime = runTime;
-  newState.breakTime = breakTime;
-  newState.goal = goal;
-  newState.phaseList = newPhaseList;
-  return newState;
+  return {
+    ...state,
+    runTime,
+    breakTime,
+    goal,
+    phaseList: makePhaseList({ goal, runTime, breakTime }),
+  };
 };
 const nextPhase = (state, action) => {
   const nextIndex = state.currentPhaseIndex + 1;
