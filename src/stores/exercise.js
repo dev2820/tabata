@@ -1,8 +1,18 @@
 import Time from "../modules/Time";
 import { RunPhase, BreakPhase, StartPhase, EndPhase } from "../modules/phase";
 //event == action 이다
+// let deepCopy = (obj) => {
+//   return Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
+// };
 let deepCopy = (obj) => {
-  return Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
+  let clone = Object.create(Object.getPrototypeOf(obj));
+  let props = Object.getOwnPropertyNames(obj);
+  props.forEach(function (key) {
+    let desc = Object.getOwnPropertyDescriptor(obj, key);
+    Object.defineProperty(clone, key, desc);
+  });
+
+  return clone;
 };
 const INITIAL_STATE = {
   runTime: new Time({ min: 0, sec: 5 }),
@@ -14,7 +24,7 @@ const INITIAL_STATE = {
     return this.phaseList[this.currentPhaseIndex];
   },
   get currentReps() {
-    return currentPhase.reps;
+    return this.currentPhase?.reps;
   },
   get isStart() {
     return this.currentPhase instanceof StartPhase;
@@ -53,13 +63,12 @@ const initExercise = (state, action) => {
   }
 
   const newPhaseList = makePhaseList(goal);
-  return {
-    ...state,
-    runTime,
-    breakTime,
-    goal,
-    newPhaseList,
-  };
+  const newState = deepCopy(state);
+  newState.runTime = runTime;
+  newState.breakTime = breakTime;
+  newState.goal = goal;
+  newState.phaseList = newPhaseList;
+  return newState;
 };
 const nextPhase = (state, action) => {
   const nextIndex = state.currentPhaseIndex + 1;
