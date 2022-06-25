@@ -25,12 +25,18 @@ export default class TimerPage extends Component {
         const currentPhase = this.store["exercise"]
           .getState()
           .getCurrentPhase();
+        const isEnd = this.store["exercise"].getState().isEndPhase();
 
         const newDOM = loadTemplate("template.timer-page");
         const $style = newDOM.querySelector("style");
         $style.innerHTML = timerPageStyle;
         const $phase = newDOM.querySelector("h2.phase");
-        $phase.innerText = isRun === false ? "정지" : currentPhase.name;
+        $phase.innerText =
+          isRun === false
+            ? isEnd === true
+              ? currentPhase.name
+              : "정지"
+            : currentPhase.name;
 
         const $button = newDOM.querySelector("button.run-and-stop");
         $button.classList.add(isRun ? "run" : "stop");
