@@ -7,20 +7,21 @@ const INITIAL_STATE = {
   goal: 0,
   phaseList: [],
   currentPhaseIndex: 0,
+  isRun: false,
   getCurrentPhase() {
     return this.phaseList[this.currentPhaseIndex];
   },
-  isStart() {
-    return this.currentPhase instanceof StartPhase;
+  isStartPhase() {
+    return this.getCurrentPhase() instanceof StartPhase;
   },
-  isRun() {
-    return this.currentPhase instanceof RunPhase;
+  isRunPhase() {
+    return this.getCurrentPhase() instanceof RunPhase;
   },
-  isBreak() {
-    return this.currentPhase instanceof BreakPhase;
+  isBreakPhase() {
+    return this.getCurrentPhase() instanceof BreakPhase;
   },
-  isEnd() {
-    return this.currentPhase instanceof EndPhase;
+  isEndPhase() {
+    return this.getCurrentPhase() instanceof EndPhase;
   },
 };
 const makePhaseList = ({ goal, runTime, breakTime }) => {
@@ -76,16 +77,33 @@ const prevPhase = (state, action) => {
   };
 };
 
+const run = (state, action) => {
+  return {
+    ...state,
+    isRun: true,
+  };
+};
+
+const stop = (state, action) => {
+  return {
+    ...state,
+    isRun: false,
+  };
+};
 const methods = Object.freeze({
   INIT_EXERCISE: initExercise,
   NEXT_PHASE: nextPhase,
   PREV_PHASE: prevPhase,
+  STOP: stop,
+  RUN: run,
 });
 
 export const EVENT_TYPES = Object.freeze({
   INIT_EXERCISE: "INIT_EXERCISE",
   NEXT_PHASE: "NEXT_PHASE",
   PREV_PHASE: "PREV_PHASE",
+  STOP: "STOP",
+  RUN: "RUN",
 });
 
 export default (initialState = INITIAL_STATE) => {
