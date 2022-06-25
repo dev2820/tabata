@@ -97,12 +97,12 @@ export default class Timer extends Component {
           this.setState({
             interval: setInterval(() => {
               this.setState({
-                time: this.state["time"].decrease1sec(),
+                time: this.state["time"].decrease100milliSec(),
               });
               if (this.state["time"].isLeft({ sec: 0 })) {
                 this.methods.riseTimeover();
               }
-            }, 1000),
+            }, 100),
           });
         },
         stop() {

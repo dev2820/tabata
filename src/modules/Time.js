@@ -10,6 +10,9 @@ export default class Time {
     this.#milliSec += min * ONE_MINUTES;
     this.#milliSec += hr * ONE_HOUR;
   }
+  decrease100milliSec() {
+    return new Time({ milliSec: this.#milliSec - 100 });
+  }
   decrease1sec() {
     return new Time({ milliSec: this.#milliSec - ONE_SECOND });
   }
