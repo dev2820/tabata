@@ -4,11 +4,14 @@ const ONE_HOUR = 60 * 60 * 1000;
 
 export default class Time {
   #milliSec = 0;
-  constructor({ hr = 0, min = 0, sec = 0, milliSec = 0 }) {
+  constructor({ hr = 0, min = 0, sec = 0, milliSec = 990 }) {
     this.#milliSec += milliSec;
     this.#milliSec += sec * ONE_SECOND;
     this.#milliSec += min * ONE_MINUTES;
     this.#milliSec += hr * ONE_HOUR;
+  }
+  decrease10milliSec() {
+    return new Time({ milliSec: this.#milliSec - 10 });
   }
   decrease100milliSec() {
     return new Time({ milliSec: this.#milliSec - 100 });
@@ -31,38 +34,26 @@ export default class Time {
   get sign() {
     return this.#milliSec < 0 ? "-" : "+";
   }
-  isLeft({ hr, min, sec, milliSec }) {
-    if (
-      hr === undefined &&
-      min === undefined &&
-      sec === undefined &&
-      milliSec === undefined
-    ) {
+  isLeft({ hr, min, sec }) {
+    if (hr === undefined && min === undefined && sec === undefined) {
       return false;
     }
-    let expectLeft = milliSec || 0;
-    expectLeft += (sec || 0) * ONE_SECOND;
+    let expectLeft = (sec || 0) * ONE_SECOND;
     expectLeft += (min || 0) * ONE_MINUTES;
     expectLeft += (hr || 0) * ONE_HOUR;
 
-    return expectLeft === this.#milliSec;
+    return this.#milliSec === expectLeft + 990;
   }
-  isLeftUnder({ hr, min, sec, milliSec }) {
-    if (
-      hr === undefined &&
-      min === undefined &&
-      sec === undefined &&
-      milliSec === undefined
-    ) {
+  isLeftUnder({ hr, min, sec }) {
+    if (hr === undefined && min === undefined && sec === undefined) {
       return false;
     }
 
-    let expectLeft = milliSec || 0;
-    expectLeft += (sec || 0) * ONE_SECOND;
+    let expectLeft = (sec || 0) * ONE_SECOND;
     expectLeft += (min || 0) * ONE_MINUTES;
     expectLeft += (hr || 0) * ONE_HOUR;
 
-    return expectLeft > this.#milliSec;
+    return this.#milliSec < expectLeft + 990;
   }
   toString() {
     let hour = this.hour < 0 ? -this.hour : this.hour;
