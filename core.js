@@ -86,10 +86,6 @@ export const registComponent = (name, component) => {
   }
 };
 
-let deepCopy = (obj) => {
-  return Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
-};
-
 export class Component extends HTMLElement {
   $ = (query) => {
     return this.shadowRoot.querySelector(query);
@@ -98,7 +94,7 @@ export class Component extends HTMLElement {
     return this.shadowRoot.firstElementChild;
   }
   get state() {
-    return Object.freeze(deepCopy(this.#state));
+    return Object.freeze(_.deepCopy(this.#state));
   }
   get methods() {
     return this.#methods;

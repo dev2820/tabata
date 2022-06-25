@@ -1,7 +1,4 @@
 //event == action 이다
-let deepCopy = (obj) => {
-  return Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
-};
 const INITIAL_STATE = {
   counter: 3,
 };
@@ -41,7 +38,7 @@ export const EVENT_TYPES = Object.freeze({
 export default (initialState = INITIAL_STATE) => {
   return (state, action) => {
     if (!state) {
-      return deepCopy(initialState);
+      return _.deepCopy(initialState);
     }
     const currentMethod = methods[action.type];
     if (!currentMethod) {

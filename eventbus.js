@@ -1,15 +1,10 @@
-let deepCopy = (obj) => {
-  return Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
-};
-
 const freeze = (obj) => {
-  return Object.freeze(deepCopy(obj));
+  return Object.freeze(_.deepCopy(obj));
 };
 
 export default (model) => {
   let listeners = [];
   let state = model();
-
   // 이벤트 등록
   const subscribe = (listener) => {
     listeners.push(listener);
@@ -44,7 +39,6 @@ export default (model) => {
   };
 
   return {
-    listeners,
     subscribe,
     dispatch,
     getState: () => freeze(state),

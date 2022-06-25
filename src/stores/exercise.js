@@ -1,19 +1,6 @@
 import Time from "../modules/Time";
 import { RunPhase, BreakPhase, StartPhase, EndPhase } from "../modules/phase";
 //event == action 이다
-// let deepCopy = (obj) => {
-//   return Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
-// };
-let deepCopy = (obj) => {
-  let clone = Object.create(Object.getPrototypeOf(obj));
-  let props = Object.getOwnPropertyNames(obj);
-  props.forEach(function (key) {
-    let desc = Object.getOwnPropertyDescriptor(obj, key);
-    Object.defineProperty(clone, key, desc);
-  });
-
-  return clone;
-};
 const INITIAL_STATE = {
   runTime: new Time({ min: 0, sec: 5 }),
   breakTime: new Time({ min: 0, sec: 3 }),
@@ -63,7 +50,7 @@ const initExercise = (state, action) => {
   }
 
   const newPhaseList = makePhaseList(goal);
-  const newState = deepCopy(state);
+  const newState = _.deepCopy(state);
   newState.runTime = runTime;
   newState.breakTime = breakTime;
   newState.goal = goal;
@@ -109,7 +96,7 @@ export const EVENT_TYPES = Object.freeze({
 export default (initialState = INITIAL_STATE) => {
   return (state, action) => {
     if (!state) {
-      return deepCopy(initialState);
+      return _.deepCopy(initialState);
     }
     const currentMethod = methods[action.type];
     if (!currentMethod) {
