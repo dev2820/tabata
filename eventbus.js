@@ -15,7 +15,7 @@ export default (model) => {
     };
   };
 
-  //???
+  //state 변형에 따라 등록된 리스너 호출
   const invokeSubscribers = () => {
     listeners.forEach((l) => l());
   };
@@ -27,7 +27,6 @@ export default (model) => {
     if (!newState) {
       throw new Error("model should always return a value");
     }
-
     if (newState === state) {
       //새로운 state와 기존 state가 같다면 변화 x
       return;
