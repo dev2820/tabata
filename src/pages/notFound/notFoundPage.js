@@ -1,4 +1,5 @@
 import notFoundPageStyle from "./notFound.css";
+import { EVENT_TYPES } from "../../stores/counter";
 import {
   Component,
   loadTemplate,
@@ -23,10 +24,13 @@ export default class NotFound extends Component {
         counter: useGlobalStore("counter"),
       },
       created() {
-        this.store["counter"].dispatch({ type: "SET_COUNTER", payload: 10 });
+        this.store["counter"].dispatch({
+          type: EVENT_TYPES.SET_COUNTER,
+          payload: 10,
+        });
       },
       connected() {
-        this.store["counter"].dispatch({ type: "INCREASE" });
+        this.store["counter"].dispatch({ type: EVENT_TYPES.INCREASE });
         if (this.store["counter"].getState().counter > 13) {
           this.unsubscribe("counter");
         }
