@@ -51,7 +51,6 @@ export default class Timer extends Component {
           } else {
             this.methods.stop();
           }
-          // this.methods.run
         });
         this.setState({
           time: this.store["exercise"].getState().getCurrentPhase().time,
@@ -62,7 +61,6 @@ export default class Timer extends Component {
       },
       methods: {
         riseTimeover() {
-          // this.methods.stop();
           this.store["exercise"].dispatch({
             type: EVENT_TYPES.STOP,
           });
@@ -96,13 +94,20 @@ export default class Timer extends Component {
 
           this.setState({
             interval: setInterval(() => {
-              this.setState({
-                time: this.state["time"].decrease1sec(),
-              });
-              if (this.state["time"].isLeft({ sec: 0 })) {
+              const nextTime = this.state["time"].decrease10milliSec();
+              if (nextTime.isLeft({ sec: 0 })) {
                 this.methods.riseTimeover();
+                if (this.store["exercise"].getState().isEndPhase()) {
+                  this.setState({
+                    time: nextTime,
+                  });
+                }
+                return;
               }
-            }, 1000),
+              this.setState({
+                time: nextTime,
+              });
+            }, 10),
           });
         },
         stop() {
