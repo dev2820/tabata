@@ -16,18 +16,6 @@ const INITIAL_STATE = {
   currentPhaseIndex: 0,
   currentPhase: new Phase(),
   isRun: false,
-  isStartPhase() {
-    return this.currentPhase instanceof StartPhase;
-  },
-  isRunPhase() {
-    return this.currentPhase instanceof RunPhase;
-  },
-  isBreakPhase() {
-    return this.currentPhase instanceof BreakPhase;
-  },
-  isEndPhase() {
-    return this.currentPhase instanceof EndPhase;
-  },
 };
 const makePhaseList = ({ goal, runTime, breakTime }) => {
   if (goal < 1) return null;

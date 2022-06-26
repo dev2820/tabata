@@ -78,7 +78,8 @@ export default class Timer extends Component {
             type: EVENT_TYPES.NEXT_PHASE,
           });
 
-          const isEnd = this.store["exercise"].getState().isEndPhase();
+          const isEnd =
+            this.store["exercise"].getState().currentPhase.isEndPhase;
 
           if (isEnd) {
             return;

@@ -22,7 +22,7 @@ export default class TimerPage extends Component {
     super({
       view: () => {
         const { isRun, currentPhase } = this.store["exercise"].getState();
-        const isEnd = this.store["exercise"].getState().isEndPhase();
+        const isEnd = this.store["exercise"].getState().currentPhase.isEndPhase;
 
         const newDOM = loadTemplate("template.timer-page");
         const $style = newDOM.querySelector("style");

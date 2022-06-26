@@ -15,6 +15,18 @@ export default class Phase {
   get korLabel() {
     return en2kor[this.name];
   }
+  get isEndPhase() {
+    return this instanceof EndPhase;
+  }
+  get isRunPhase() {
+    return this instanceof RunPhase;
+  }
+  get isBreakPhase() {
+    return this instanceof BreakPhase;
+  }
+  get isTickPhase() {
+    return this instanceof BreakTickPhase || this instanceof RunTickPhase;
+  }
   constructor(phaseName, reps, time) {
     this.name = phaseName;
     this.reps = reps;
