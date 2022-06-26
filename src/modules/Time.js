@@ -44,7 +44,7 @@ export default class Time {
 
     return this.#milliSec === expectLeft + 990;
   }
-  isLeftUnder({ hr, min, sec }) {
+  isLeftLessThan({ hr, min, sec }) {
     if (hr === undefined && min === undefined && sec === undefined) {
       return false;
     }
@@ -53,7 +53,7 @@ export default class Time {
     expectLeft += (min || 0) * ONE_MINUTES;
     expectLeft += (hr || 0) * ONE_HOUR;
 
-    return this.#milliSec < expectLeft + 990;
+    return this.#milliSec <= expectLeft + 990;
   }
   toString() {
     let hour = this.hour < 0 ? -this.hour : this.hour;

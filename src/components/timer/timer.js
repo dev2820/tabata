@@ -39,7 +39,7 @@ export default class Timer extends Component {
 
         if (this.state["time"]?.isLeft({ sec: 0 })) {
           $timer.classList.add("time-is-up");
-        } else if (this.state["time"]?.isLeftUnder({ sec: 4 })) {
+        } else if (this.state["time"]?.isLeftLessThan({ sec: 3 })) {
           $timer.classList.add("will-be-end");
         }
         return $timer;
@@ -95,6 +95,7 @@ export default class Timer extends Component {
           this.setState({
             interval: setInterval(() => {
               const nextTime = this.state["time"].decrease10milliSec();
+              console.log(nextTime);
               if (nextTime.isLeft({ sec: 0 })) {
                 this.methods.riseTimeover();
                 if (this.store["exercise"].getState().isEndPhase()) {
