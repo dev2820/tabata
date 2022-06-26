@@ -7,6 +7,20 @@ import {
 } from "../../../core";
 import { EVENT_TYPES } from "../../stores/exercise";
 
+const makeMinutesString = (phase) => {
+  return ("00" + (phase.currentTime?.min || 0)).slice(-2);
+};
+
+const makeSecondsString = (phase) => {
+  return ("00" + (phase.currentTime?.sec || 0)).slice(-2);
+};
+
+const isTimerFinished = (time) => {
+  return time.isLeft({ sec: 0 });
+};
+const isTimerAlmostFinished = (time) => {
+  return time.isLeftLessThan({ sec: 3 });
+};
 export default class Timer extends Component {
   static get observedAttributes() {
     return [];
@@ -30,18 +44,14 @@ export default class Timer extends Component {
         $style.innerHTML = timerStyle;
 
         const $minutes = $timer.querySelector("span.minutes");
-        $minutes.innerText = (
-          "00" + (currentPhase.currentTime?.min || 0)
-        ).slice(-2);
+        $minutes.innerText = makeMinutesString(currentPhase);
 
         const $seconds = $timer.querySelector("span.seconds");
-        $seconds.innerText = (
-          "00" + (currentPhase.currentTime?.sec || 0)
-        ).slice(-2);
+        $seconds.innerText = makeSecondsString(currentPhase);
 
-        if (currentPhase.currentTime?.isLeft({ sec: 0 })) {
+        if (isTimerFinished(currentPhase.currentTime)) {
           $timer.classList.add("time-is-up");
-        } else if (currentPhase.currentTime?.isLeftLessThan({ sec: 3 })) {
+        } else if (isTimerAlmostFinished(currentPhase.currentTime)) {
           $timer.classList.add("will-be-end");
         }
         return $timer;
@@ -83,7 +93,7 @@ export default class Timer extends Component {
           //시간이 없어서 타이머를 못킴
           if (
             !currentPhase.currentTime ||
-            currentPhase.currentTime.isLeft({ sec: 0 })
+            isTimerFinished(currentPhase.currentTime)
           )
             return;
 
@@ -91,7 +101,7 @@ export default class Timer extends Component {
             interval: setInterval(() => {
               const { currentPhase } = this.store["exercise"].getState();
               const nextTime = currentPhase.currentTime.decrease100milliSec();
-              if (nextTime.isLeft({ sec: 0 })) {
+              if (isTimerFinished(nextTime)) {
                 this.methods.riseTimeover();
                 return;
               }
