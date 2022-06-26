@@ -67,7 +67,7 @@ const nextPhase = (state, action) => {
   return {
     ...state,
     currentPhaseIndex: nextIndex,
-    currentPhase: newPhaseList[nextIndex],
+    currentPhase: state.phaseList[nextIndex],
   };
 };
 
@@ -80,7 +80,7 @@ const prevPhase = (state, action) => {
   return {
     ...state,
     currentPhaseIndex: prevIndex,
-    currentPhase: newPhaseList[prevIndex],
+    currentPhase: state.phaseList[prevIndex],
   };
 };
 
