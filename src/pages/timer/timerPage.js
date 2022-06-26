@@ -34,9 +34,9 @@ export default class TimerPage extends Component {
         $phase.innerText =
           isRun === false
             ? isEnd === true
-              ? currentPhase.name
+              ? currentPhase.korLabel
               : "정지"
-            : currentPhase.name;
+            : currentPhase.korLabel;
 
         const $button = newDOM.querySelector("button.run-and-stop");
         $button.classList.add(isRun ? "run" : "stop");

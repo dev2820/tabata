@@ -9,8 +9,11 @@ export default class Phase {
   reps = 0;
   name = "";
   time = new Time({ sec: 0 });
+  get korLabel() {
+    return en2kor[this.name];
+  }
   constructor(phaseName, reps, time) {
-    this.name = en2kor[phaseName];
+    this.name = phaseName;
     this.reps = reps;
     this.time = time;
   }
