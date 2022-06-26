@@ -4,9 +4,7 @@ import TimerPageTemplate from "./src/pages/timer/timerPageTemplate";
 import NotFound from "./src/pages/notFound/notFoundPage";
 import NotFoundTemplate from "./src/pages/notFound/notFoundPageTemplate";
 import timerTemplate from "./src/components/timer/timerTemplate";
-import runAndStopButtonTemplate from "./src/components/runAndStopButton/runAndStopButtonTemplate.js";
 import repsTemplate from "./src/components/reps/repsTemplate";
-import RunAndStopButton from "./src/components/runAndStopButton/runAndStopButton";
 import RouterLink from "./src/components/routerLink/routerLink";
 import RegexPage from "./src/pages/regexPage/regexPage";
 
