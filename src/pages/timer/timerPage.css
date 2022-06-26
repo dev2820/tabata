@@ -15,17 +15,37 @@
     flex-direction:column;
     align-items: center;
 }
-#timer-page > main > section.timer-zone > button.run-and-stop {
-    margin-top:2rem;
-    border-radius:24px;
+#timer-page > main > section.timer-zone > div.controller > button.run-and-stop {
+    height:56px;
+    border-radius:28px;
     padding:0.75rem 4rem;
     font-size:1rem;
-    cursor:pointer;
     border:none;
     font-family:'Nanum Gothic';
     font-weight:bold;
 }
-
+div.controller {
+    display:flex;
+    flex-direction:row;
+    margin-top:2rem;
+    width:300px;
+    justify-content: space-between;
+}
+button {
+    cursor:pointer;
+    background:#DDD;
+}
+button.prev,button.next {
+    display:inline-block;
+    height:56px;
+    width:56px;
+    border-radius:50%;
+    border:none;
+    margin:auto 0;
+}
+button.prev:hover,button.next:hover {
+    background:#CCC;
+}
 button.run-and-stop.run {
     background:lightsalmon;
 }
