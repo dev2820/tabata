@@ -18,28 +18,30 @@ export default class Timer extends Component {
     super({
       state: {
         interval: null,
-        time: null,
       },
       store: {
         exercise: useGlobalStore("exercise"),
       },
       view: () => {
         const $timer = loadTemplate("template.timer");
-        $timer.classList.add(
-          this.store["exercise"].getState().currentPhase.name
-        );
+        const { currentPhase } = this.store["exercise"].getState();
+        $timer.classList.add(currentPhase.name);
         const $style = $timer.querySelector("style");
         $style.innerHTML = timerStyle;
 
         const $minutes = $timer.querySelector("span.minutes");
-        $minutes.innerText = ("00" + (this.state["time"]?.min || 0)).slice(-2);
+        $minutes.innerText = (
+          "00" + (currentPhase.currentTime?.min || 0)
+        ).slice(-2);
 
         const $seconds = $timer.querySelector("span.seconds");
-        $seconds.innerText = ("00" + (this.state["time"]?.sec || 0)).slice(-2);
+        $seconds.innerText = (
+          "00" + (currentPhase.currentTime?.sec || 0)
+        ).slice(-2);
 
-        if (this.state["time"]?.isLeft({ sec: 0 })) {
+        if (currentPhase.currentTime?.isLeft({ sec: 0 })) {
           $timer.classList.add("time-is-up");
-        } else if (this.state["time"]?.isLeftLessThan({ sec: 3 })) {
+        } else if (currentPhase.currentTime?.isLeftLessThan({ sec: 3 })) {
           $timer.classList.add("will-be-end");
         }
         return $timer;
@@ -51,9 +53,6 @@ export default class Timer extends Component {
           } else {
             this.methods.stop();
           }
-        });
-        this.setState({
-          time: this.store["exercise"].getState().currentPhase.time,
         });
         this.store["exercise"].dispatch({
           type: EVENT_TYPES.RUN,
@@ -70,42 +69,37 @@ export default class Timer extends Component {
           });
 
           const isEnd = this.store["exercise"].getState().isEndPhase();
-          const currentPhase = this.store["exercise"].getState().currentPhase;
 
           if (isEnd) {
             return;
           }
-
-          this.setState({
-            time: currentPhase.time,
-            phase: currentPhase,
-          });
 
           this.store["exercise"].dispatch({
             type: EVENT_TYPES.RUN,
           });
         },
         run() {
-          const { time } = this.state;
+          const { currentPhase } = this.store["exercise"].getState();
           //시간이 없어서 타이머를 못킴
-          if (!time || time.isLeft({ sec: 0 })) return;
+          if (
+            !currentPhase.currentTime ||
+            currentPhase.currentTime.isLeft({ sec: 0 })
+          )
+            return;
 
           this.setState({
             interval: setInterval(() => {
-              const nextTime = this.state["time"].decrease10milliSec();
+              const { currentPhase } = this.store["exercise"].getState();
+              const nextTime = currentPhase.currentTime.decrease100milliSec();
               if (nextTime.isLeft({ sec: 0 })) {
                 this.methods.riseTimeover();
-                if (this.store["exercise"].getState().isEndPhase()) {
-                  this.setState({
-                    time: nextTime,
-                  });
-                }
                 return;
               }
-              this.setState({
-                time: nextTime,
+              this.store["exercise"].dispatch({
+                type: EVENT_TYPES.NEXT_TIME,
+                payload: nextTime,
               });
-            }, 10),
+            }, 100),
           });
         },
         stop() {

@@ -4,6 +4,8 @@ import Phase, {
   BreakPhase,
   StartPhase,
   EndPhase,
+  RunTickPhase,
+  BreakTickPhase,
 } from "../modules/phase";
 //event == action 이다
 const INITIAL_STATE = {
@@ -33,10 +35,13 @@ const makePhaseList = ({ goal, runTime, breakTime }) => {
   let reps = 1;
   const list = [];
   for (let i = 0; i < goal - 1; i++) {
+    list.push(new RunTickPhase(reps));
     list.push(new RunPhase(reps, runTime));
+    list.push(new BreakTickPhase(reps));
     list.push(new BreakPhase(reps, breakTime));
     reps++;
   }
+  list.push(new RunTickPhase(reps));
   list.push(new RunPhase(reps, runTime));
   list.push(new EndPhase(reps));
 
@@ -61,9 +66,14 @@ const initExercise = (state, action) => {
 const nextPhase = (state, action) => {
   const nextIndex = state.currentPhaseIndex + 1;
   if (nextIndex >= state.phaseList.length) {
-    return state;
+    const currentIndex = state.currentPhaseIndex;
+    state.phaseList[currentIndex].currentTime =
+      state.phaseList[currentIndex].startTime;
+    return {
+      ...state,
+    };
   }
-
+  state.phaseList[nextIndex].currentTime = state.phaseList[nextIndex].startTime;
   return {
     ...state,
     currentPhaseIndex: nextIndex,
@@ -73,10 +83,17 @@ const nextPhase = (state, action) => {
 
 const prevPhase = (state, action) => {
   const prevIndex = state.currentPhaseIndex - 1;
+
   if (prevIndex < 0) {
-    return state;
+    const currentIndex = state.currentPhaseIndex;
+    state.phaseList[currentIndex].currentTime =
+      state.phaseList[currentIndex].startTime;
+    return {
+      ...state,
+    };
   }
 
+  state.phaseList[prevIndex].currentTime = state.phaseList[prevIndex].startTime;
   return {
     ...state,
     currentPhaseIndex: prevIndex,
@@ -97,10 +114,20 @@ const stop = (state, action) => {
     isRun: false,
   };
 };
+
+const nextTime = (state, action) => {
+  const nextTime = action.payload;
+  state.currentPhase.currentTime = nextTime;
+
+  return {
+    ...state,
+  };
+};
 const methods = Object.freeze({
   INIT_EXERCISE: initExercise,
   NEXT_PHASE: nextPhase,
   PREV_PHASE: prevPhase,
+  NEXT_TIME: nextTime,
   STOP: stop,
   RUN: run,
 });
@@ -109,6 +136,7 @@ export const EVENT_TYPES = Object.freeze({
   INIT_EXERCISE: "INIT_EXERCISE",
   NEXT_PHASE: "NEXT_PHASE",
   PREV_PHASE: "PREV_PHASE",
+  NEXT_TIME: "NEXT_TIME",
   STOP: "STOP",
   RUN: "RUN",
 });
