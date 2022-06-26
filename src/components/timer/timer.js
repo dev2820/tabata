@@ -95,7 +95,6 @@ export default class Timer extends Component {
           this.setState({
             interval: setInterval(() => {
               const nextTime = this.state["time"].decrease10milliSec();
-              console.log(nextTime);
               if (nextTime.isLeft({ sec: 0 })) {
                 this.methods.riseTimeover();
                 if (this.store["exercise"].getState().isEndPhase()) {
