@@ -21,10 +21,7 @@ export default class TimerPage extends Component {
     });
     super({
       view: () => {
-        const { isRun } = this.store["exercise"].getState();
-        const currentPhase = this.store["exercise"]
-          .getState()
-          .getCurrentPhase();
+        const { isRun, currentPhase } = this.store["exercise"].getState();
         const isEnd = this.store["exercise"].getState().isEndPhase();
 
         const newDOM = loadTemplate("template.timer-page");
@@ -37,17 +34,34 @@ export default class TimerPage extends Component {
               ? currentPhase.korLabel
               : "정지"
             : currentPhase.korLabel;
-
         const $button = newDOM.querySelector("button.run-and-stop");
         $button.classList.add(isRun ? "run" : "stop");
         $button.innerText = isRun ? "정지" : "계속";
         $button.addEventListener("click", this.methods.timerToggle);
+        // const $runAndStop = newDOM.querySelector("button.run-and-stop");
+        // $runAndStop.classList.add(isRun ? "run" : "stop");
+        // $runAndStop.innerText = isRun ? "정지" : "계속";
+        // $runAndStop.addEventListener("click", this.methods.timerToggle);
+
+        // const $prevButton = newDOM.querySelector("button.prev");
+        // $prevButton.addEventListener("click", this.methods.prevPhase);
         return newDOM;
       },
       store: {
         exercise: useGlobalStore("exercise"),
       },
       methods: {
+        // prevPhase(e) {
+        //   this.store["exercise"].dispatch({
+        //     type: EVENT_TYPES.STOP,
+        //   });
+        //   this.store["exercise"].dispatch({
+        //     type: EVENT_TYPES.PREV_PHASE,
+        //   });
+        //   this.store["exercise"].dispatch({
+        //     type: EVENT_TYPES.RUN,
+        //   });
+        // },
         timerToggle(e) {
           const isTimerRun = this.store["exercise"].getState().isRun;
           if (isTimerRun) {

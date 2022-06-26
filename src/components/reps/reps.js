@@ -17,9 +17,7 @@ export default class Reps extends Component {
         exercise: useGlobalStore("exercise"),
       },
       view: () => {
-        const currentReps = this.store["exercise"]
-          .getState()
-          .getCurrentPhase().reps;
+        const currentReps = this.store["exercise"].getState().currentPhase.reps;
 
         const goal = this.store["exercise"].getState().goal;
         const newDOM = loadTemplate("template.reps");

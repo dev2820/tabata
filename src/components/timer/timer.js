@@ -26,7 +26,7 @@ export default class Timer extends Component {
       view: () => {
         const $timer = loadTemplate("template.timer");
         $timer.classList.add(
-          this.store["exercise"].getState().getCurrentPhase().name
+          this.store["exercise"].getState().currentPhase.name
         );
         const $style = $timer.querySelector("style");
         $style.innerHTML = timerStyle;
@@ -53,7 +53,7 @@ export default class Timer extends Component {
           }
         });
         this.setState({
-          time: this.store["exercise"].getState().getCurrentPhase().time,
+          time: this.store["exercise"].getState().currentPhase.time,
         });
         this.store["exercise"].dispatch({
           type: EVENT_TYPES.RUN,
@@ -70,9 +70,7 @@ export default class Timer extends Component {
           });
 
           const isEnd = this.store["exercise"].getState().isEndPhase();
-          const currentPhase = this.store["exercise"]
-            .getState()
-            .getCurrentPhase();
+          const currentPhase = this.store["exercise"].getState().currentPhase;
 
           if (isEnd) {
             return;

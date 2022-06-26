@@ -1,5 +1,10 @@
 import Time from "../modules/time";
-import { RunPhase, BreakPhase, StartPhase, EndPhase } from "../modules/phase";
+import Phase, {
+  RunPhase,
+  BreakPhase,
+  StartPhase,
+  EndPhase,
+} from "../modules/phase";
 //event == action 이다
 const INITIAL_STATE = {
   runTime: new Time({ min: 0, sec: 5 }),
@@ -7,21 +12,19 @@ const INITIAL_STATE = {
   goal: 0,
   phaseList: [],
   currentPhaseIndex: 0,
+  currentPhase: new Phase(),
   isRun: false,
-  getCurrentPhase() {
-    return this.phaseList[this.currentPhaseIndex];
-  },
   isStartPhase() {
-    return this.getCurrentPhase() instanceof StartPhase;
+    return this.currentPhase instanceof StartPhase;
   },
   isRunPhase() {
-    return this.getCurrentPhase() instanceof RunPhase;
+    return this.currentPhase instanceof RunPhase;
   },
   isBreakPhase() {
-    return this.getCurrentPhase() instanceof BreakPhase;
+    return this.currentPhase instanceof BreakPhase;
   },
   isEndPhase() {
-    return this.getCurrentPhase() instanceof EndPhase;
+    return this.currentPhase instanceof EndPhase;
   },
 };
 const makePhaseList = ({ goal, runTime, breakTime }) => {
@@ -44,13 +47,15 @@ const initExercise = (state, action) => {
   if (!goal) {
     return state;
   }
-
+  const newPhaseList = makePhaseList({ goal, runTime, breakTime });
   return {
     ...state,
     runTime,
     breakTime,
     goal,
-    phaseList: makePhaseList({ goal, runTime, breakTime }),
+    phaseList: newPhaseList,
+    currentPhaseIndex: 0,
+    currentPhase: newPhaseList[0],
   };
 };
 const nextPhase = (state, action) => {
@@ -62,6 +67,7 @@ const nextPhase = (state, action) => {
   return {
     ...state,
     currentPhaseIndex: nextIndex,
+    currentPhase: newPhaseList[nextIndex],
   };
 };
 
@@ -74,6 +80,7 @@ const prevPhase = (state, action) => {
   return {
     ...state,
     currentPhaseIndex: prevIndex,
+    currentPhase: newPhaseList[prevIndex],
   };
 };
 
