@@ -41,6 +41,9 @@ export default class TimerPage extends Component {
 
         const $prevButton = newDOM.querySelector("button.prev");
         $prevButton.addEventListener("click", this.methods.prevPhase);
+
+        const $nextButton = newDOM.querySelector("button.next");
+        $nextButton.addEventListener("click", this.methods.nextPhase);
         return newDOM;
       },
       store: {
@@ -53,6 +56,17 @@ export default class TimerPage extends Component {
           });
           this.store["exercise"].dispatch({
             type: EVENT_TYPES.PREV_PHASE,
+          });
+          this.store["exercise"].dispatch({
+            type: EVENT_TYPES.RUN,
+          });
+        },
+        nextPhase(e) {
+          this.store["exercise"].dispatch({
+            type: EVENT_TYPES.STOP,
+          });
+          this.store["exercise"].dispatch({
+            type: EVENT_TYPES.NEXT_PHASE,
           });
           this.store["exercise"].dispatch({
             type: EVENT_TYPES.RUN,
