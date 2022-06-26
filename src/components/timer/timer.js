@@ -8,10 +8,16 @@ import {
 import { EVENT_TYPES } from "../../stores/exercise";
 
 const makeMinutesString = (phase) => {
+  if (phase.isTickPhase) {
+    return "--";
+  }
   return ("00" + (phase.currentTime?.min || 0)).slice(-2);
 };
 
 const makeSecondsString = (phase) => {
+  if (phase.isTickPhase) {
+    return "--";
+  }
   return ("00" + (phase.currentTime?.sec || 0)).slice(-2);
 };
 
